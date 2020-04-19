@@ -1,7 +1,8 @@
-package com.dbpp.my12306.cli;
+package com.dbpp.my12306.cli.train;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.dbpp.my12306.cli.DateConverter;
 import com.dbpp.my12306.utils.Date;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class CmdPick {
 	 * pick full info of one route.
 	 * temporary version.
 	 */
-	public void pick() {
+	public void execute() {
 		status = 0;
 		hour = 12;
 		minute = 0;
