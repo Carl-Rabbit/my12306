@@ -11,11 +11,28 @@
     </select>
 
     <select id="getById" resultType="User">
-        select * from users where id = #{id}
+        select * from users where user_id = #{id}
     </select>
 
     <select id="getByName" resultType="User">
         select * from users where user_name = #{name}
     </select>
+
+    <select id="getAll" resultType="User">
+        select * from users
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
+        insert into users (user_name, password) values
+            (#{userName}, #{password})
+    </insert>
+
+    <delete id="delete">
+        delete from users
+        <where>
+            <if test="id != null">user_id=#{id}</if>
+            <if test="name != null and name.length()>0" >and user_name=#{name}</if>
+        </where>
+    </delete>
 
 </mapper>

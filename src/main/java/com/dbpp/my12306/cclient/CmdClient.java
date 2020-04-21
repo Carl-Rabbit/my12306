@@ -15,8 +15,8 @@ import java.util.Scanner;
 /**
  * The command client terminal using cli.
  * It will launch up when app starts.
- * If you don't want to start cmd window, or you are running this in non-graphical system,
- * please run the application with args '-NOCMD'
+ * If you don't want to start cmd window, or you are running it in non-graphical system,
+ * please run the application with args '-nocmd' or '-incmd'
  */
 
 @Component
@@ -45,14 +45,20 @@ public class CmdClient implements CommandLineRunner {
 
 	@Override
 	public void run(String[] args) {
-		if (args.length != 0 && args[0].equals("-NOCMD")) {
-			return;
+		// default: swing console
+		if (args.length == 0) {
+			startOuterConsole();
 		}
-		// without this, the program can't start up.
-		System.setProperty("java.awt.headless","false");
-		// choose one
-		startOuterConsole();
-//		startInnerConsole();
+
+		switch (args[0]) {
+			case "-nocmd":
+				return;
+			case "-incmd":
+				startInnerConsole();
+			case "-outcmd":
+			default:
+				startOuterConsole();
+		}
 	}
 
 	/**
@@ -60,11 +66,16 @@ public class CmdClient implements CommandLineRunner {
 	 * This window can be restart and end by input 'start'/'end' in system console
 	 */
 	public void startOuterConsole() {
+		// without this, the program can't start up.
+		System.setProperty("java.awt.headless", "false");
+
 		cmdFrame = new CmdFrame(banner, this);
 		cmdFrame.start();
 
 		String str;
 		Scanner in = new Scanner(System.in);
+
+		System.out.println("\nOuter shell start.");
 
 		outer:
 		while (true) {
@@ -88,7 +99,7 @@ public class CmdClient implements CommandLineRunner {
 						System.out.println("Shell has already closed.");
 					}
 					break;
-				case "end console listener":
+				case "stop listening":
 					System.out.println("End listening.");
 					break outer;
 				default:
@@ -104,13 +115,12 @@ public class CmdClient implements CommandLineRunner {
 	public void startInnerConsole() {
 		String str;
 		Scanner in = new Scanner(System.in);
-		System.out.println(banner);
+		System.out.println("\n" + banner);
 
 		while(true) {
-			System.out.print("> ");
 			str = in.nextLine();
 			if (str.isBlank()) continue;
-			if ("quit".equals(str)) break;
+			if ("exit".equals(str)) break;
 			execute(str.split(" "));
 			System.out.println(result);
 		}
