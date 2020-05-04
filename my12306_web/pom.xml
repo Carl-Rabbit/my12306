@@ -71,6 +71,13 @@
             <version>1.2.12</version>
         </dependency>
 
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- log -->
 <!--        <dependency>-->
 <!--            <groupId>ch.qos.logback</groupId>-->

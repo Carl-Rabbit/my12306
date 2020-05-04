@@ -6,19 +6,19 @@
 
 <mapper namespace="com.dbpp.my12306.mapper.UserMapper">
 
-    <select id="count" resultType="java.lang.Integer">
+    <select id="count" resultType="Integer">
         select count(*) from users
     </select>
 
-    <select id="getById" resultType="User">
+    <select id="getById" resultType="com.dbpp.my12306.entity.User">
         select * from users where user_id = #{id}
     </select>
 
-    <select id="getByName" resultType="User">
+    <select id="getByName" resultType="com.dbpp.my12306.entity.User">
         select * from users where user_name = #{name}
     </select>
 
-    <select id="getAll" resultType="User">
+    <select id="getAll" resultType="com.dbpp.my12306.entity.User">
         select * from users
     </select>
 

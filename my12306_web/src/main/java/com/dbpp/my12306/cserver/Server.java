@@ -9,7 +9,6 @@ import com.dbpp.my12306.service.UserService;
 import com.dbpp.my12306.utils.ConnHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
@@ -20,7 +19,8 @@ import java.util.Scanner;
  * please run the application with args '-nocmd' or '-incmd'
  */
 
-@Component
+// not use
+//@Component
 public class Server implements CommandLineRunner {
 
 	private JCommander jc;
@@ -52,7 +52,8 @@ public class Server implements CommandLineRunner {
 	public void run(String[] args) {
 		// default: inner console
 		if (args.length == 0) {
-			startInnerConsole();
+//			startInnerConsole();
+			return;
 		}
 
 		switch (args[0]) {

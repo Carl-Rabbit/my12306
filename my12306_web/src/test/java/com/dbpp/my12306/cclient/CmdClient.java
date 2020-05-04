@@ -1,10 +1,10 @@
 package com.dbpp.my12306.cclient;
 
 import com.beust.jcommander.JCommander;
-import com.dbpp.my12306.cli.user.CmdCntuser;
-import com.dbpp.my12306.cli.user.CmdGetuser;
 import com.dbpp.my12306.cli.CmdMain;
 import com.dbpp.my12306.cli.train.CmdPick;
+import com.dbpp.my12306.cli.user.CmdCntuser;
+import com.dbpp.my12306.cli.user.CmdGetuser;
 import com.dbpp.my12306.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

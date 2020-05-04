@@ -1,7 +1,5 @@
 package com.dbpp.my12306.cserver;
 
-import com.dbpp.my12306.entity.Role;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -12,7 +10,6 @@ public class HandlerThread implements Runnable {
 	private Socket socket;
 	private BufferedReader inFromClient;
 	private PrintStream outToClient;
-	private Role role;
 
 	public HandlerThread(Server server, Socket socket) {
 		this.server = server;
@@ -68,18 +65,18 @@ public class HandlerThread implements Runnable {
 	}
 
 	public boolean processHead(String head) {
-		// username,pw,dbname$
-		String[] values = head.split(",");
-		if (values.length != 3 || values[0].length() != 1) {
-			outToClient.println("Error: connect failed, " + head);
-			return true;
-		}
-		Object[] ret = server.getConnHandler()
-				.check(values[0].charAt(0), values[1], values[2]);
-		if (ret == null) {
-			outToClient.println("Error: no user named " + values[0]);
-			return true;
-		}
+//		// username,pw,dbname$
+//		String[] values = head.split(",");
+//		if (values.length != 3 || values[0].length() != 1) {
+//			outToClient.println("Error: connect failed, " + head);
+//			return true;
+//		}
+//		Object[] ret = server.getConnHandler()
+//				.check(values[0].charAt(0), values[1], values[2]);
+//		if (ret == null) {
+//			outToClient.println("Error: no user named " + values[0]);
+//			return true;
+//		}
 
 		return false;
 	}

@@ -1,4 +1,4 @@
-package com.dbpp.my12306;
+package com.dbpp.my12306.otherTests;
 
 
 import javax.swing.*;
