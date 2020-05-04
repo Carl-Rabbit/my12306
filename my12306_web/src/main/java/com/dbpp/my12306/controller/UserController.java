@@ -50,7 +50,7 @@ public class UserController {
 	@RequestMapping("/add_user")
 	public String add(@RequestParam String name,
 	                  @RequestParam String password) {
-		var ret = userService.add(name, password);
+		var ret = userService.add('A', name, password);
 		if (ret == 0) {
 			return "Insert failed<br>" + userService.msg;
 		} else {

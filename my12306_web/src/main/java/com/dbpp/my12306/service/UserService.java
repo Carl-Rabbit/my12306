@@ -54,10 +54,10 @@ public class UserService {
 	 * Add user to the database
 	 * @return the id of user.
 	 */
-	public long add(String name, String password) {
+	public long add(char type, String name, String password) {
 		long ret;
 		try {
-			ret = userMapper.add(new User(name, password));
+			ret = userMapper.add(new User(type, name, password));
 		} catch (DuplicateKeyException e) {
 			msg = e.getMessage();
 			System.err.println(msg);
