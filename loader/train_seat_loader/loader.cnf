@@ -1,0 +1,4 @@
+host = localhost
+database = my_railway
+user = rw_admin_0
+password = 123456

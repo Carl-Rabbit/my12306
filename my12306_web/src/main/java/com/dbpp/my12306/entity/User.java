@@ -1,27 +1,26 @@
 package com.dbpp.my12306.entity;
 
 public class User {
-	private long id;
+	private int userId;
 	private String userName;
 	private String password;
+	private String phoneNo;
+	private char realNameCertification;
 
-	public User(long id, String userName, String password) {
-		this.id = id;
+	public User(int userId, String userName, String password, String phoneNo, char realNameCertification) {
+		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
+		this.phoneNo = phoneNo;
+		this.realNameCertification = realNameCertification;
 	}
 
-	public User(String userName, String password) {
-		this.userName = userName;
-		this.password = password;
+	public int getUserId() {
+		return userId;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {
@@ -40,12 +39,30 @@ public class User {
 		this.password = password;
 	}
 
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public char getRealNameCertification() {
+		return realNameCertification;
+	}
+
+	public void setRealNameCertification(char realNameCertification) {
+		this.realNameCertification = realNameCertification;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
-				"id=" + id +
+				"userId=" + userId +
 				", userName='" + userName + '\'' +
 				", password='" + password + '\'' +
+				", phoneNo='" + phoneNo + '\'' +
+				", realNameCertification=" + realNameCertification +
 				'}';
 	}
 }
