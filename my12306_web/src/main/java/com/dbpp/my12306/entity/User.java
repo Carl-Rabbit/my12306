@@ -55,14 +55,5 @@ public class User {
 		this.realNameCertification = realNameCertification;
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"userId=" + userId +
-				", userName='" + userName + '\'' +
-				", password='" + password + '\'' +
-				", phoneNo='" + phoneNo + '\'' +
-				", realNameCertification=" + realNameCertification +
-				'}';
-	}
+
 }

@@ -5,3 +5,4 @@ create table cities
     name_en  varchar(45) not null unique,
     province varchar(10)
 );
+

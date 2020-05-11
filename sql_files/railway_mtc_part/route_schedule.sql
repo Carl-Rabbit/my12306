@@ -9,9 +9,24 @@ create table route_schedule
 
 -- fk
 
+-- alter table route_schedule
+--     add foreign key (train_code) references time_details (train_code)
+--         on update cascade;
+--
+-- drop index if exists route_schedule_train_code_fk_idx;
+-- create index route_schedule_train_code_fk_idx on route_schedule (train_code);
+
+
 alter table route_schedule
-    add foreign key (train_code) references trains (train_no)
+    add foreign key (train_no) references trains (train_no)
         on update cascade;
 
-drop index if exists seats_train_no_fk_idx;
-create index seats_train_no_fk_idx on seats (train_no);
+drop index if exists route_schedule_train_no_fk_idx;
+create index route_schedule_train_no_fk_idx on route_schedule (train_no);
+
+-- unique index
+
+create unique index route_schedule_train_date_idx
+    on route_schedule (train_code, depart_date);
+
+
