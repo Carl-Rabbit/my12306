@@ -8,9 +8,10 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 	int count();
-	User getById(long id);
+	User getById(int id);
 	User getByName(String name);
 	List<User> getAll();
-	long add(User user);
-	int delete(Long id, String name);
+	int add(User user);
+	int hide(int id);
+	int delete(Integer id, String name);
 }

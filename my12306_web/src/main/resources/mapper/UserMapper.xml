@@ -23,9 +23,14 @@
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
-        insert into users (user_name, password) values
-            (#{userName}, #{password})
+        insert into users (user_name, password,
+                           phone_no, real_name_certification) values
+            (#{userName}, #{password}, #{phoneNo}, #{realNameCertification})
     </insert>
+
+    <update id="hide">
+        update users set available = 'N' where user_id = #{id};
+    </update>
 
     <delete id="delete">
         delete from users

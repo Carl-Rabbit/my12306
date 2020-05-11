@@ -4,7 +4,7 @@ create table orders
     user_id      int       not null,
     create_time  timestamp not null default now(),
     order_status char      not null default 'N', -- N: not payed, P: payed
-    kind         char
+    available    char      not null default 'Y'
 );
 
 alter table orders

@@ -1,8 +1,8 @@
 package com.dbpp.my12306.service;
 
-import com.dbpp.my12306.entity.User;
+import com.dbpp.my12306.entity.Passenger;
 import com.dbpp.my12306.mapper.LoggerMapper;
-import com.dbpp.my12306.mapper.UserMapper;
+import com.dbpp.my12306.mapper.PassengerMapper;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -14,26 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserService {
+public class PassengerService {
 
 	@Autowired
-	private UserMapper userMapper;
+	private PassengerMapper passengerMapper;
 	@Autowired
 	private LoggerMapper loggerMapper;
 
 	Logger log = LogManager.getLogger(this.getClass().getName());
 
 	/**
-	 * Get the number of users
+	 * Get the number of passengers
 	 *
-	 * @return number of users
+	 * @return response set: number of users
 	 */
 	public ResponseSet<Integer> count() {
-		String event = "User count.";
+		String event = "Passenger count.";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
-			ret.setData(userMapper.count());
+			ret.setData(passengerMapper.count());
 		} catch (Exception e) {
 			ret.setData(-1);
 			ret.setStatus(ResultCode.EXCEPTION);
@@ -45,17 +45,37 @@ public class UserService {
 	}
 
 	/**
-	 * Get all users
+	 * Get the number of passengers
+	 *
+	 * @return response set: number of users
+	 */
+	public ResponseSet<Integer> countAllOf(int userId) {
+		String event = "Passenger count for userId=" + userId + ".";
+		ResponseSet<Integer> ret = new ResponseSet<>();
+		try {
+			ret.setStatus(ResultCode.SUCCESS);
+			ret.setData(passengerMapper.countAllOf(userId));
+		} catch (Exception e) {
+			ret.setData(-1);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getMessage());
+		}
+		log.info(event + " " + ret);
+		loggerMapper.add(event, ret.toString());
+		return ret;
+	}
+
+	/**
+	 * Get all passengers
 	 *
 	 * @return the list of users and user info
 	 */
-	public ResponseSet<List<User>> getAll() {
-		String event = "Get all user.";
-		ResponseSet<List<User>> ret = new ResponseSet<>();
+	public ResponseSet<List<Passenger>> getAll() {
+		String event = "Get all passengers.";
+		ResponseSet<List<Passenger>> ret = new ResponseSet<>();
 		try {
-			ret.setData(userMapper.getAll());
-			ret.setStatus(ret.getData() != null ?
-					ResultCode.SUCCESS : ResultCode.NO_RESULT);
+			ret.setStatus(ResultCode.SUCCESS);
+			ret.setData(passengerMapper.getAll());
 		} catch (Exception e) {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
@@ -65,6 +85,28 @@ public class UserService {
 		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
+
+	/**
+	 * Get all passengers of one user
+	 *
+	 * @return the list of passengers and passenger info
+	 */
+	public ResponseSet<List<Passenger>> getAllOf(int userId) {
+		String event = "Get all passengers of user, userId=" + userId + ".";
+		ResponseSet<List<Passenger>> ret = new ResponseSet<>();
+		try {
+			ret.setStatus(ResultCode.SUCCESS);
+			ret.setData(passengerMapper.getAllOf(userId));
+		} catch (Exception e) {
+			ret.setData(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getMessage());
+		}
+		log.info(event + " " + ret);
+		loggerMapper.add(event, ret.toString());
+		return ret;
+	}
+
 
 	/**
 	 * Get user by id
@@ -72,11 +114,11 @@ public class UserService {
 	 * @param id user id
 	 * @return the user object. Null if not exits.
 	 */
-	public ResponseSet<User> getById(int id) {
-		String event = "Get user by id=" + id + ".";
-		ResponseSet<User> ret = new ResponseSet<>();
+	public ResponseSet<Passenger> getById(int id) {
+		String event = "Get passenger by id=" + id + ".";
+		ResponseSet<Passenger> ret = new ResponseSet<>();
 		try {
-			ret.setData(userMapper.getById(id));
+			ret.setData(passengerMapper.getById(id));
 			ret.setStatus(ret.getData() != null ?
 					ResultCode.SUCCESS : ResultCode.NO_RESULT);
 		} catch (Exception e) {
@@ -90,41 +132,19 @@ public class UserService {
 	}
 
 	/**
-	 * Get user by name
-	 *
-	 * @param name user name
-	 * @return the user object. Null if not exits.
-	 */
-	public ResponseSet<User> getByName(String name) {
-		String event = "Get user by name=" + name + ".";
-		ResponseSet<User> ret = new ResponseSet<>();
-		try {
-			ret.setStatus(ResultCode.SUCCESS);
-			ret.setData(userMapper.getByName(name));
-		} catch (Exception e) {
-			ret.setData(null);
-			ret.setStatus(ResultCode.EXCEPTION);
-			ret.setDetail(e.getMessage());
-		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
-		return ret;
-	}
-
-	/**
-	 * Add user to the database
+	 * Add passenger to the database
 	 *
 	 * @return the id of user.
 	 */
 	@Transactional
-	public ResponseSet<Integer> add(String name, String password, String phoneNo,
-	                                String realNameCertification) {
-		User user = new User(name, password, phoneNo, realNameCertification);
-		String event = "Add user: " + user + ".";
+	public ResponseSet<Integer> add(int userId, String firstName, String lastName,
+	                                String kind, String gender, String idNo) {
+		Passenger psg = new Passenger(userId, firstName, lastName, kind, gender, idNo);
+		String event = "Add passenger: " + psg + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
-			ret.setData(userMapper.add(user));
+			ret.setData(passengerMapper.add(psg));
 		} catch (Exception e) {
 			ret.setDetail(null);
 			ret.setStatus(ResultCode.EXCEPTION);
@@ -136,22 +156,22 @@ public class UserService {
 	}
 
 	/**
-	 * Set user to be not available
+	 * Hide passenger from database
 	 *
-	 * @param id   user id to hide
-	 * @return hide or not
+	 * @param id   psg id to hide
+	 * @return delete or not
 	 */
 	@Transactional
 	public ResponseSet<Integer> hide(int id) {
-		String event = "Delete user: id=" + id + ".";
+		String event = "Delete passenger: id=" + id + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			int r = userMapper.hide(id);
+			int r = passengerMapper.delete(id);
 			if (r == 1) {
-				ret.setDetail("Hide completed.");
+				ret.setDetail("Delete completed.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
-				ret.setDetail("No such user.");
+				ret.setDetail("No such passenger.");
 				ret.setStatus(ResultCode.FAIL);
 			}
 			ret.setData(r);
@@ -166,23 +186,22 @@ public class UserService {
 	}
 
 	/**
-	 * Delete user from database
+	 * Delete passenger from database
 	 *
-	 * @param id   user id to delete
-	 * @param name user name to delete
+	 * @param id   psg id to delete
 	 * @return delete or not
 	 */
 	@Transactional
-	public ResponseSet<Integer> delete(Integer id, String name) {
-		String event = "Delete user: id=" + id + ", name=" + name + ".";
+	public ResponseSet<Integer> delete(int id) {
+		String event = "Delete passenger: id=" + id + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			int r = userMapper.delete(id, name);
+			int r = passengerMapper.delete(id);
 			if (r == 1) {
 				ret.setDetail("Delete completed.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
-				ret.setDetail("No such user.");
+				ret.setDetail("No such passenger.");
 				ret.setStatus(ResultCode.FAIL);
 			}
 			ret.setData(r);
