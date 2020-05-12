@@ -1,15 +1,13 @@
 package com.dbpp.my12306.service;
 
 import com.dbpp.my12306.entity.User;
-import com.dbpp.my12306.mapper.LoggerMapper;
 import com.dbpp.my12306.mapper.UserMapper;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
@@ -18,10 +16,6 @@ public class UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-	@Autowired
-	private LoggerMapper loggerMapper;
-
-	Logger log = LogManager.getLogger(this.getClass().getName());
 
 	/**
 	 * Get the number of users
@@ -29,7 +23,6 @@ public class UserService {
 	 * @return number of users
 	 */
 	public ResponseSet<Integer> count() {
-		String event = "User count.";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
@@ -39,8 +32,6 @@ public class UserService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -50,7 +41,6 @@ public class UserService {
 	 * @return the list of users and user info
 	 */
 	public ResponseSet<List<User>> getAll() {
-		String event = "Get all user.";
 		ResponseSet<List<User>> ret = new ResponseSet<>();
 		try {
 			ret.setData(userMapper.getAll());
@@ -61,8 +51,6 @@ public class UserService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -73,7 +61,6 @@ public class UserService {
 	 * @return the user object. Null if not exits.
 	 */
 	public ResponseSet<User> getById(int id) {
-		String event = "Get user by id=" + id + ".";
 		ResponseSet<User> ret = new ResponseSet<>();
 		try {
 			ret.setData(userMapper.getById(id));
@@ -84,8 +71,6 @@ public class UserService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -96,7 +81,6 @@ public class UserService {
 	 * @return the user object. Null if not exits.
 	 */
 	public ResponseSet<User> getByName(String name) {
-		String event = "Get user by name=" + name + ".";
 		ResponseSet<User> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
@@ -106,8 +90,6 @@ public class UserService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -120,18 +102,18 @@ public class UserService {
 	public ResponseSet<Integer> add(String name, String password, String phoneNo,
 	                                String realNameCertification) {
 		User user = new User(name, password, phoneNo, realNameCertification);
-		String event = "Add user: " + user + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
-			ret.setData(userMapper.add(user));
+			userMapper.add(user);
+			ret.setData(user.getUserId());
 		} catch (Exception e) {
 			ret.setDetail(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -143,7 +125,6 @@ public class UserService {
 	 */
 	@Transactional
 	public ResponseSet<Integer> hide(int id) {
-		String event = "Delete user: id=" + id + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			int r = userMapper.hide(id);
@@ -159,9 +140,9 @@ public class UserService {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -174,7 +155,6 @@ public class UserService {
 	 */
 	@Transactional
 	public ResponseSet<Integer> delete(Integer id, String name) {
-		String event = "Delete user: id=" + id + ", name=" + name + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			int r = userMapper.delete(id, name);
@@ -190,9 +170,9 @@ public class UserService {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 

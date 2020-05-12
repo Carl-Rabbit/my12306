@@ -6,7 +6,7 @@
 
 <mapper namespace="com.dbpp.my12306.mapper.UserMapper">
 
-    <select id="count" resultType="Integer">
+    <select id="count" resultType="int">
         select count(*) from users
     </select>
 
@@ -22,7 +22,7 @@
         select * from users
     </select>
 
-    <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
+    <insert id="add" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into users (user_name, password,
                            phone_no, real_name_certification) values
             (#{userName}, #{password}, #{phoneNo}, #{realNameCertification})

@@ -3,8 +3,6 @@ package com.dbpp.my12306.controller;
 import com.dbpp.my12306.entity.User;
 import com.dbpp.my12306.service.UserService;
 import com.dbpp.my12306.utils.ResponseSet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +15,6 @@ import java.util.List;
 public class ApiUserController {
 	@Autowired
 	private UserService userService;
-
-	Logger logger = LogManager.getLogger(this.getClass().getName());
 
 	@RequestMapping("/count")
 	public ResponseSet<Integer> count() {

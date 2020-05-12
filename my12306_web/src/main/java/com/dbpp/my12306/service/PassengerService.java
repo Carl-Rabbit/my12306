@@ -1,15 +1,13 @@
 package com.dbpp.my12306.service;
 
 import com.dbpp.my12306.entity.Passenger;
-import com.dbpp.my12306.mapper.LoggerMapper;
 import com.dbpp.my12306.mapper.PassengerMapper;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
@@ -18,10 +16,6 @@ public class PassengerService {
 
 	@Autowired
 	private PassengerMapper passengerMapper;
-	@Autowired
-	private LoggerMapper loggerMapper;
-
-	Logger log = LogManager.getLogger(this.getClass().getName());
 
 	/**
 	 * Get the number of passengers
@@ -29,7 +23,6 @@ public class PassengerService {
 	 * @return response set: number of users
 	 */
 	public ResponseSet<Integer> count() {
-		String event = "Passenger count.";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
@@ -39,8 +32,6 @@ public class PassengerService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -60,8 +51,6 @@ public class PassengerService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -81,8 +70,6 @@ public class PassengerService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -92,7 +79,6 @@ public class PassengerService {
 	 * @return the list of passengers and passenger info
 	 */
 	public ResponseSet<List<Passenger>> getAllOf(int userId) {
-		String event = "Get all passengers of user, userId=" + userId + ".";
 		ResponseSet<List<Passenger>> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
@@ -102,8 +88,6 @@ public class PassengerService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -115,7 +99,6 @@ public class PassengerService {
 	 * @return the user object. Null if not exits.
 	 */
 	public ResponseSet<Passenger> getById(int id) {
-		String event = "Get passenger by id=" + id + ".";
 		ResponseSet<Passenger> ret = new ResponseSet<>();
 		try {
 			ret.setData(passengerMapper.getById(id));
@@ -126,32 +109,30 @@ public class PassengerService {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
 	/**
 	 * Add passenger to the database
 	 *
-	 * @return the id of user.
+	 * @return the id of passenger.
 	 */
 	@Transactional
 	public ResponseSet<Integer> add(int userId, String firstName, String lastName,
 	                                String kind, String gender, String idNo) {
 		Passenger psg = new Passenger(userId, firstName, lastName, kind, gender, idNo);
-		String event = "Add passenger: " + psg + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
-			ret.setData(passengerMapper.add(psg));
+			passengerMapper.add(psg);
+			ret.setData(psg.getPassengerId());
 		} catch (Exception e) {
 			ret.setDetail(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -163,12 +144,11 @@ public class PassengerService {
 	 */
 	@Transactional
 	public ResponseSet<Integer> hide(int id) {
-		String event = "Delete passenger: id=" + id + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			int r = passengerMapper.delete(id);
 			if (r == 1) {
-				ret.setDetail("Delete completed.");
+				ret.setDetail("Hide completed.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
 				ret.setDetail("No such passenger.");
@@ -179,9 +159,9 @@ public class PassengerService {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 
@@ -209,9 +189,9 @@ public class PassengerService {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
 		}
-		log.info(event + " " + ret);
-		loggerMapper.add(event, ret.toString());
 		return ret;
 	}
 

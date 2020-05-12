@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="driver-class-name"
+                    source="spring.datasource.driver-class-name" defaultValue="org.postgresql.Driver"/>
+    <springProperty scope="context" name="url"
+                    source="spring.datasource.url" defaultValue="jdbc:postgresql://localhost:5432/my_railway"/>
+    <springProperty scope="context" name="username"
+                    source="spring.datasource.username" defaultValue="rw_admin_1"/>
+    <springProperty scope="context" name="password"
+                    source="spring.datasource.password" defaultValue="123456"/>
+    <!-- 控制台输出 -->
+    <appender name="console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%5p) %boldMagenta(${PID:-}) [%15.15t] %cyan(%-40.40logger{39}) : %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--连接数据库配置-->
+    <appender name="db_postgres" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+            <dataSource class="com.alibaba.druid.pool.DruidDataSource">
+                <driverClassName>org.postgresql.Driver</driverClassName>
+                <url>jdbc:postgresql://localhost:5432/my_railway</url>
+                <username>rw_admin_0</username>
+                <password>123456</password>
+            </dataSource>
+        </connectionSource>
+    </appender>
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="console" />
+        <appender-ref ref="db_postgres" />
+    </root>
+</configuration>

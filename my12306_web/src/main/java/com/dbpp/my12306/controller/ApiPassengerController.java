@@ -1,6 +1,7 @@
 package com.dbpp.my12306.controller;
 
 import com.dbpp.my12306.entity.Passenger;
+import com.dbpp.my12306.mapper.LoggerMapper;
 import com.dbpp.my12306.service.PassengerService;
 import com.dbpp.my12306.utils.ResponseSet;
 import org.apache.logging.log4j.LogManager;
@@ -17,17 +18,25 @@ import java.util.List;
 public class ApiPassengerController {
 	@Autowired
 	private PassengerService PassengerService;
+	@Autowired
+	private LoggerMapper loggerMapper;
 
 	Logger logger = LogManager.getLogger(this.getClass().getName());
 
 	@RequestMapping("/count")
 	public ResponseSet<Integer> count() {
-		return PassengerService.count();
+		var ret = PassengerService.count();
+		logger.info("Opt count. " + ret);
+		loggerMapper.add("Opt count.", ret.toString());
+		return ret;
 	}
 
 	@RequestMapping("/count-all-of")
 	public ResponseSet<Integer> countAllOf(@RequestParam Integer userId) {
-		return PassengerService.countAllOf(userId);
+		var ret = PassengerService.countAllOf(userId);
+		logger.info("Opt countAllOf, userId=" + userId + ". " + ret);
+		loggerMapper.add("Opt countAllOf, userId=" + userId + ". ", ret.toString());
+		return ret;
 	}
 
 	@RequestMapping("/get-by-id")
