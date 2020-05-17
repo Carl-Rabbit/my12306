@@ -1,0 +1,19 @@
+### success 1
+PUT {{baseUrl}}/api/user
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+{
+  "new_pwd": "abcdefg"
+}
+
+### success 2
+PUT {{baseUrl}}/api/user
+Authorization: CarlRabbit:abcdefg
+Content-Type: application/json
+
+{
+  "new_pwd": "123456"
+}
+
+###

@@ -10,9 +10,10 @@ public interface PassengerMapper {
 	int count();
 	int countAllOf(int userId);
 	Passenger getById(int id);
-	List<Passenger> getAll();
-	List<Passenger> getAllOf(int userId);
+	List<Passenger> getAll(boolean seeDisable);
+	List<Passenger> getAllOf(int userId, boolean seeDisable);
+	List<Passenger> getAllOfByName(String userName, boolean seeDisable);
 	int add(Passenger psg);
-	int hide(int id);
+	int disable(int id);
 	int delete(Integer id);
 }

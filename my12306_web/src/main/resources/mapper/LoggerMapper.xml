@@ -7,7 +7,8 @@
 <mapper namespace="com.dbpp.my12306.mapper.LoggerMapper">
 
     <insert id="add">
-        insert into loggers (event, result) values (#{event}, #{result})
+        insert into logging (event, result)
+        values (#{event}, #{result})
     </insert>
 
 </mapper>

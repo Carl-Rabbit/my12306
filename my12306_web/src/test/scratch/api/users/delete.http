@@ -1,0 +1,9 @@
+### success
+DELETE {{baseUrl}}/api/admin/user?id=28
+Authorization: admin:admin
+
+### success
+DELETE {{baseUrl}}/api/admin/user?name=LittleDog7
+Authorization: admin:admin
+
+###

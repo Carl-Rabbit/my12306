@@ -1,4 +1,5 @@
-create table loggers
+drop table if exists logging;
+create table logging
 (
     time   timestamp default now(),
     event  varchar not null,

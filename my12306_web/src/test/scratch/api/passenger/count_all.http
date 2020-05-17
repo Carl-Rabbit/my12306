@@ -1,0 +1,5 @@
+### success
+GET {{baseUrl}}/api/admin/psgs/num
+Authorization: admin:admin
+
+###

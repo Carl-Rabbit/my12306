@@ -1,0 +1,21 @@
+### success 1
+GET {{baseUrl}}/api/psg/1
+Authorization: CarlRabbit:123456
+
+### success 2
+GET {{baseUrl}}/api/psgs
+Authorization: CarlRabbit:123456
+
+### success 3 (admin)
+GET {{baseUrl}}/api/admin/psg/1
+Authorization: admin:admin
+
+### success 4 (admin)
+GET {{baseUrl}}/api//admin/psgs?name=CarlRabbit
+Authorization: admin:admin
+
+### fail: other user's psg
+GET {{baseUrl}}/api/psg/4
+Authorization: CarlRabbit:123456
+
+###

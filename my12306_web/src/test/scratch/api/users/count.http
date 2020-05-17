@@ -1,0 +1,5 @@
+### success
+GET {{baseUrl}}/api/admin/users/num
+Authorization: admin:admin
+
+###

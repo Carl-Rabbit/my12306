@@ -1,0 +1,8 @@
+Function	Type	Interface	Param	Auth	Comment
+get info	GET	/user	?id=ID&name=NAME	user	require at least one param
+		/admin/user		admin	
+register	POST	/user	Json: user info		
+update	PUT	/user	Json: user info	user	
+delete	DELETE	/admin/user	?id=ID&name=NAME	admin	
+get all	GET	/admin/users		admin	
+count	GET	/admin/users/num		admin	

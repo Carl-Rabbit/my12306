@@ -1,0 +1,32 @@
+### success
+GET {{baseUrl}}/api/user
+Authorization: CarlRabbit:123456
+
+### wrong user name
+GET {{baseUrl}}/api/user
+Authorization: WrongUserName:123456
+
+### wrong passward
+GET {{baseUrl}}/api/user
+Authorization: CarlRabbit:654321
+
+
+### Admin ####
+
+### success: get info
+GET {{baseUrl}}/api/admin/user?name=CarlRabbit
+Authorization: admin:admin
+
+### wrong admin name
+GET {{baseUrl}}/api/admin/user?id=1
+Authorization: WrongAdminName:admin
+
+### param error
+GET {{baseUrl}}/api/admin/user
+Authorization: admin:admin
+
+### success: get all
+GET {{baseUrl}}/api/admin/users
+Authorization: admin:admin
+
+###

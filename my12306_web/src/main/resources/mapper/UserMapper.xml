@@ -24,8 +24,15 @@
 
     <insert id="add" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into users (user_name, password,
-                           phone_no, real_name_certification) values
-            (#{userName}, #{password}, #{phoneNo}, #{realNameCertification})
+                           phone_no
+                           <if test="realNameCertification != null">
+                               , real_name_certification
+                           </if>
+                           ) values
+            (#{userName}, #{password}, #{phoneNo}
+        <if test="realNameCertification != null">
+            ,#{realNameCertification}
+        </if>)
     </insert>
 
     <update id="hide">
@@ -39,5 +46,24 @@
             <if test="name != null and name.length()>0" >and user_name=#{name}</if>
         </where>
     </delete>
+
+    <update id="update" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        update users
+        <set>
+            <if test="user.getPassword() != null">
+                password = #{user.password},
+            </if>
+            <if test="user.getPhoneNo() != null">
+                phone_no = #{user.phoneNo},
+            </if>
+            <if test="user.getKind() != null">
+                kind = #{user.kind},
+            </if>
+            <if test="user.getRealNameCertification() != null">
+                real_name_certification = #{user.realNameCertification},
+            </if>
+        </set>
+        where user_name = #{user.userName} and password = #{oldPwd};
+    </update>
 
 </mapper>

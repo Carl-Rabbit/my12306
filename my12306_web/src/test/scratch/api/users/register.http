@@ -1,0 +1,48 @@
+### success (Remember to change name)
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "name": "LittleDog1",
+  "password": "123456",
+  "phone_no": "13511112222",
+  "kind": "A",
+  "rnc": "N"
+}
+
+### fail: same name
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "name": "CarlRabbit",
+  "password": "123456",
+  "phone_no": "13511112222",
+  "kind": "A",
+  "rnc": "N"
+}
+
+### fail: param missing
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "name": "LittleDog999",
+  "phone_no": "13511112222",
+  "kind": "A",
+  "rnc": "N"
+}
+
+### fail: database constance
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "name": "LittleDog999",
+  "password": "123456",
+  "phone_no": "13511112222",
+  "kind": "A",
+  "rnc": "X"
+}
+
+###

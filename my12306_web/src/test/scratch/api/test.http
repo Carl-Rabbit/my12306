@@ -1,0 +1,54 @@
+### count ###
+
+GET {{baseUrl}}/api/user/count
+Accept: application/json
+
+
+### get-by-id ###
+
+### success
+GET {{baseUrl}}/api/user/get-by-id?id=1
+Accept: application/json
+
+### no result
+GET {{baseUrl}}/api/user/get-by-id?id=999
+Accept: application/json
+
+
+### get-by-name ###
+
+### success
+GET {{baseUrl}}/api/user/get-by-name?name=CarlRabbit
+Accept: application/json
+
+### no result
+GET {{baseUrl}}/api/user/get-by-name?name=NullUserName
+Accept: application/json
+
+
+### test
+GET {{baseUrl}}/api/user/get-all
+
+###
+POST {{baseUrl}}/test/s/test1
+Content-Type: application/json
+
+{
+  "name1": "UserName"
+}
+
+###
+POST {{baseUrl}}/test/test2
+Content-Type: application/json
+
+{
+  "name": "UserName"
+}
+
+###
+GET {{baseUrl}}/test/test2
+
+###
+GET {{baseUrl}}/test/test3
+
+###

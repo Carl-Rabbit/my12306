@@ -36,7 +36,7 @@ alter table passengers
 
 truncate passengers cascade;
 
-alter sequence passengers_passenger_id_seq restart with 0;
+alter sequence passengers_passenger_id_seq restart with 1;
 
 insert into passengers (user_id, first_name, last_name, gender, id_no)
 values (1, 'Jack', 'Steven', 'M', '52213120001122007X');

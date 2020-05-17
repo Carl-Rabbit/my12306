@@ -14,4 +14,5 @@ public interface UserMapper {
 	int add(User user);
 	int hide(int id);
 	int delete(Integer id, String name);
+	int update(User user, String oldPwd);
 }

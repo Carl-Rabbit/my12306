@@ -1,58 +1,146 @@
 package com.dbpp.my12306.controller;
 
 import com.dbpp.my12306.entity.User;
+import com.dbpp.my12306.service.AuthService;
+import com.dbpp.my12306.service.LoggerService;
 import com.dbpp.my12306.service.UserService;
 import com.dbpp.my12306.utils.ResponseSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.dbpp.my12306.utils.ResultCode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class ApiUserController {
-	@Autowired
-	private UserService userService;
+	private final AuthService authService;
+	private final UserService userService;
+	private final LoggerService loggerService;
 
-	@RequestMapping("/count")
-	public ResponseSet<Integer> count() {
-		return userService.count();
+	private Logger logger = LogManager.getLogger(this.getClass().getName());
+
+	public ApiUserController(AuthService authService, UserService userService, LoggerService loggerService) {
+		this.authService = authService;
+		this.userService = userService;
+		this.loggerService = loggerService;
 	}
 
-	@RequestMapping("/get-by-id")
-	public ResponseSet<User> getById(@RequestParam int id) {
-		return userService.getById(id);
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ResponseSet<?> getInfo(HttpServletRequest request) {
+		var auth = authService.getAuth(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+
+		String[] detail = auth.getData();
+		var ret = userService.getByName(detail[0]);
+		User data = ret.getData();
+		if (data == null) {
+			ret = new ResponseSet<>(ResultCode.NO_RESULT, "No such username", null);
+		}
+		if (data != null && !data.getPassword().equals(detail[1])) {
+			ret = new ResponseSet<>(ResultCode.INVALID_AUTH, "Wrong password", null);
+		}
+		loggerService.info(logger, "ApiUserController.getInfo auth=" + detail[0], ret);
+		return ret;
 	}
 
-	@RequestMapping("/get-by-name")
-	public ResponseSet<User> getByName(String name) {
-		return userService.getByName(name);
+	@RequestMapping(value = "/admin/user", method = RequestMethod.GET)
+	public ResponseSet<?> getInfoAdmin(@RequestParam(required = false) Integer id,
+	                                   @RequestParam(required = false) String name,
+	                                   HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) { return auth; }
+
+		ResponseSet<User> ret;
+		if (id != null) {
+			ret = userService.getById(id);
+		} else if (name != null) {
+			ret = userService.getByName(name);
+		} else {
+			ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Require at least one param", null);
+		}
+		loggerService.info(logger, "ApiUserController.getInfoAdmin id=" + id
+				+ " name=" + name + " auth=" + auth.getData(), ret);
+		return ret;
 	}
 
-	@RequestMapping("/get-all")
-	public ResponseSet<List<User>> getAll() {
-		return userService.getAll();
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public ResponseSet<?> register(@RequestBody Map<String, String> m) {
+		ResponseSet<Integer> ret;
+		String name = m.get("name");
+		String password = m.get("password");
+		if (name == null || password == null) {
+			ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Name and password are required.", null);
+		} else {
+			ret = userService.add(name, password, m.get("phone_no"),
+					m.get("kind"), m.get("rnc"));
+		}
+		loggerService.info(logger, "ApiUserController.register", ret);
+		return ret;
 	}
 
-	@RequestMapping("/add")
-	public ResponseSet<Integer>
-	add(@RequestParam String name,
-	    @RequestParam String password,
-	    @RequestParam(value = "phone-no", required = false) String phoneNo,
-	    @RequestParam(value = "rnc", defaultValue = "Y") String realNameCertification) {
-		return userService.add(name, password, phoneNo, realNameCertification);
+	@RequestMapping(value = "/user", method = RequestMethod.PUT)
+	public ResponseSet<?> update(@RequestBody Map<String, String> m,
+	                             HttpServletRequest request) {
+		var auth = authService.getAuth(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+
+		String[] detail = auth.getData();
+		var ret = userService.update(detail[0], detail[1], m.get("new_pwd"), m.get("phone_no"),
+				m.get("kind"), m.get("rnc"));
+		loggerService.info(logger, "ApiUserController.update m=" + m + " request=" + request, ret);
+		return ret;
 	}
 
-	@RequestMapping("/hide")
-	public ResponseSet<Integer> delete(@RequestParam int id) {
-		return userService.hide(id);
+	@RequestMapping(value = "/admin/user", method = RequestMethod.DELETE)
+	public ResponseSet<?> delete(@RequestParam(required = false) Integer id,
+	                             @RequestParam(required = false) String name,
+	                             HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) { return auth; }
+
+		ResponseSet<Integer> ret;
+		if (id == null && name == null) {
+			ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Require at least one param", null);
+		} else {
+			ret = userService.delete(id, name);
+		}
+		loggerService.info(logger, "ApiUserController.delete id=" + id + " name=" + name, ret);
+		return ret;
 	}
 
-	@RequestMapping("/delete")
-	public ResponseSet<Integer> delete(@RequestParam(required = false) Integer id,
-	                                   @RequestParam(required = false) String name) {
-		return userService.delete(id, name);
+
+	@RequestMapping(value = "/admin/users/num", method = RequestMethod.GET)
+	public ResponseSet<?> count(HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) { return auth; }
+
+		var ret = userService.count();
+		loggerService.info(logger, "ApiUserController.count", ret);
+		return ret;
 	}
+
+	@RequestMapping("/admin/users")
+	public ResponseSet<?> getAll(HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) { return auth; }
+
+		var ret = userService.getAll();
+		loggerService.info(logger, "ApiUserController.getAll", ret);
+		return ret;
+	}
+
+//	@RequestMapping("/hide")
+//	public ResponseSet<Integer> delete(@RequestParam int id) {
+//		var ret = userService.hide(id);
+//		loggerService.info(logger, "com.dbpp.my12306.controller" +
+//				".ApiUserController.delete id=" + id, ret);
+//		return ret;
+//	}
 }

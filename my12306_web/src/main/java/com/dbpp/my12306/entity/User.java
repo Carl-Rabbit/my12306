@@ -5,22 +5,27 @@ public class User {
 	private String userName;
 	private String password;
 	private String phoneNo;
-	private String realNameCertification;
+	private String kind;
 	private String available;
+	private String realNameCertification;
 
-	public User(int userId, String userName, String password, String phoneNo, String realNameCertification, String available) {
+	public User(int userId, String userName, String password, String phoneNo,
+	            String kind, String available, String realNameCertification) {
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
 		this.phoneNo = phoneNo;
-		this.realNameCertification = realNameCertification;
+		this.kind = kind;
 		this.available = available;
+		this.realNameCertification = realNameCertification;
 	}
 
-	public User(String userName, String password, String phoneNo, String realNameCertification) {
+	public User(String userName, String password, String phoneNo, String kind,
+	            String realNameCertification) {
 		this.userName = userName;
 		this.password = password;
 		this.phoneNo = phoneNo;
+		this.kind = kind;
 		this.realNameCertification = realNameCertification;
 	}
 
@@ -54,6 +59,14 @@ public class User {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 
 	public String getRealNameCertification() {

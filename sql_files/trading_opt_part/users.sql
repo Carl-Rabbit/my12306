@@ -12,6 +12,13 @@ create table users
 drop index if exists users_user_name_idx;
 create unique index users_user_name_idx on users (user_name);
 
+alter table users
+    add constraint users_kind_cons check (kind in ('A', 'C'));
+alter table users
+    add constraint users_available_cons check (available in ('Y', 'N'));
+alter table users
+    add constraint users_rnc_cons check (real_name_certification in ('Y', 'N'));
+
 -- test
 
 truncate users cascade;

@@ -1,0 +1,17 @@
+Function,Type,Interface,Extra Param,Auth,Comment
+get info,GET,/user/passenger,/{psg_id},,
+or,,,,,
+?id=ID&name=NAME,,,,,
+,user,Get one,,,
+or all,,,,,
+,,/admin/user/passenger,,admin,one or two param
+,,,,,
+,,,,,
+add,POST,/user/{id}/passenger,Json: passenger info,user,
+update,PUT,/user/{id}/passenger/{psg_id},Json: passenger info,user,
+delete,DELETE,/user/{id}/passenger,,,
+,/{psg_id},user,Set disable,,
+delete,DELETE,/admin/user/{id}/passenger,/{psg_id}?true=TRUE,admin,Set disable
+or true delete,,,,,
+get all,GET,/admin/passengers,,admin,
+count,GET,/admin/passengers/num,,admin,

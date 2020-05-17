@@ -26,12 +26,22 @@
     <select id="getAll" resultType="com.dbpp.my12306.entity.Passenger">
         select *
         from passengers
+        <if test="!seeDisable">where available='Y'</if>
     </select>
 
     <select id="getAllOf" resultType="com.dbpp.my12306.entity.Passenger">
         select *
         from passengers
         where user_id = #{userId}
+        <if test="!seeDisable">and available='Y'</if>
+    </select>
+
+    <select id="getAllOfByName" resultType="com.dbpp.my12306.entity.Passenger">
+        select passengers.*
+        from passengers
+            join users on users.user_id = passengers.user_id
+        where users.user_name = #{userName}
+        <if test="!seeDisable">and users.available='Y'</if>
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
@@ -41,7 +51,7 @@
                 #{kind}, #{gender}, #{idNo})
     </insert>
 
-    <update id="hide">
+    <update id="disable">
         update passengers
         set available = 'N'
         where passenger_id = #{id};

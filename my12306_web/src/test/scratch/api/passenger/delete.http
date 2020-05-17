@@ -1,0 +1,17 @@
+### success
+DELETE {{baseUrl}}/api/psg/6
+Authorization: CarlRabbit:123456
+
+### success (set disable, admin)
+DELETE {{baseUrl}}/api/admin/psg/6
+Authorization: admin:admin
+
+### success (true delete, admin)
+DELETE {{baseUrl}}/api/admin/psg/6?true_del=true
+Authorization: admin:admin
+
+### fail: other user's passenger
+DELETE {{baseUrl}}/api/psg/4
+Authorization: CarlRabbit:123456
+
+###

@@ -1,33 +1,46 @@
 package com.dbpp.my12306.utils;
 
 public class ResponseSet<T> {
-	private int code;
-	private String msg;
+	private int status;
+	private String message;
 	private String detail;
 	private T data;
 
+	public ResponseSet() {
+	}
+
+	public ResponseSet(T data) {
+		this.setStatus(ResultCode.SUCCESS);
+		this.data = data;
+	}
+
+	public ResponseSet(ResultCode resultCode, String detail, T data) {
+		this.setStatus(resultCode);
+		this.detail = detail;
+		this.data = data;
+	}
 
 	@Override
 	public String toString() {
 		return "ResponseSet{" +
-				"code=" + code +
-				", msg='" + msg + '\'' +
+				"status=" + status +
+				", message='" + message + '\'' +
 				", detail='" + detail + '\'' +
 				", data=" + data +
 				'}';
 	}
 
-	public int getCode() {
-		return code;
+	public int getStatus() {
+		return status;
 	}
 
 	public void setStatus(ResultCode resultCode) {
-		this.code = resultCode.getVal();
-		this.msg = resultCode.getMsg();
+		this.status = resultCode.getCode();
+		this.message = resultCode.getMsg();
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
 	public String getDetail() {

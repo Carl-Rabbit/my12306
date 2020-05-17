@@ -4,7 +4,6 @@ import com.dbpp.my12306.entity.User;
 import com.dbpp.my12306.mapper.UserMapper;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -14,8 +13,11 @@ import java.util.List;
 @Service
 public class UserService {
 
-	@Autowired
-	private UserMapper userMapper;
+	private final UserMapper userMapper;
+
+	public UserService(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
 
 	/**
 	 * Get the number of users
@@ -83,8 +85,9 @@ public class UserService {
 	public ResponseSet<User> getByName(String name) {
 		ResponseSet<User> ret = new ResponseSet<>();
 		try {
-			ret.setStatus(ResultCode.SUCCESS);
 			ret.setData(userMapper.getByName(name));
+			ret.setStatus(ret.getData() != null ?
+					ResultCode.SUCCESS : ResultCode.NO_RESULT);
 		} catch (Exception e) {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
@@ -96,21 +99,31 @@ public class UserService {
 	/**
 	 * Add user to the database
 	 *
-	 * @return the id of user.
+	 * @return the info of user.
 	 */
 	@Transactional
 	public ResponseSet<Integer> add(String name, String password, String phoneNo,
-	                                String realNameCertification) {
-		User user = new User(name, password, phoneNo, realNameCertification);
+	                                String kind, String realNameCertification) {
+		User user = new User(name, password, phoneNo, kind, realNameCertification);
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			ret.setStatus(ResultCode.SUCCESS);
+			ret.setStatus(ResultCode.CREATED);
 			userMapper.add(user);
+			user.setAvailable("Y");
+			if (user.getRealNameCertification() == null) {
+				user.setRealNameCertification("Y");
+			}
 			ret.setData(user.getUserId());
 		} catch (Exception e) {
 			ret.setDetail(null);
-			ret.setStatus(ResultCode.EXCEPTION);
-			ret.setDetail(e.getMessage());
+			if (e.getCause().getMessage().contains("duplicate key")) {
+				ret.setStatus(ResultCode.SUCCESS_IS_HAVE);
+			} else if (e.getCause().getMessage().contains("row contains")) {
+				ret.setStatus(ResultCode.CONS_ERROR);
+			} else {
+				ret.setStatus(ResultCode.EXCEPTION);
+			}
+			ret.setDetail(e.getCause().getMessage().split("详细：")[1]);
 			TransactionAspectSupport.currentTransactionStatus()
 					.setRollbackOnly();
 		}
@@ -120,7 +133,7 @@ public class UserService {
 	/**
 	 * Set user to be not available
 	 *
-	 * @param id   user id to hide
+	 * @param id user id to hide
 	 * @return hide or not
 	 */
 	@Transactional
@@ -176,18 +189,32 @@ public class UserService {
 		return ret;
 	}
 
-//	/**
-//	 * Update the user.
-//	 * If the user not exits, change nothing
-//	 * @param user update this user
-//	 * @return the pk of user
-//	 */
-//	long update(User user);
-//
-//	/**
-//	 * Check exist
-//	 * @param id user id to check
-//	 * @return exist or not
-//	 */
-//	boolean exist(int id);
+	/**
+	 * Update the user.
+	 * If the user not exits, change nothing
+	 *
+	 * @return the fix info of user
+	 */
+	@Transactional
+	public ResponseSet<Integer> update(String name, String oldPwd, String newPwd,
+	                                   String newPhoneNo, String newKind, String newRnc) {
+		User user = new User(name, newPwd, newPhoneNo, newKind, newRnc);
+		ResponseSet<Integer> ret = new ResponseSet<>();
+		try {
+			if (userMapper.update(user, oldPwd) == 0) {
+				ret.setStatus(ResultCode.INVALID_AUTH);
+				ret.setDetail("The username or password is wrong");
+			} else {
+				ret.setStatus(ResultCode.SUCCESS);
+			}
+		} catch (Exception e) {
+			ret.setDetail(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getMessage());
+			TransactionAspectSupport.currentTransactionStatus()
+					.setRollbackOnly();
+		}
+		return ret;
+	}
+
 }

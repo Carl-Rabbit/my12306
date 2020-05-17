@@ -1,0 +1,14 @@
+### success
+POST {{baseUrl}}/api/psg
+Authorization: LittleDog1:123456
+Content-Type: application/json
+
+{
+  "first_name": "Tom",
+  "last_name": "Smith",
+  "kind": "A",
+  "gender": "M",
+  "id_no": "150223200002292137"
+}
+
+###
