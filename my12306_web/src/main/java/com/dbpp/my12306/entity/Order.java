@@ -1,69 +1,66 @@
 package com.dbpp.my12306.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Order {
-	private int orderId;
-	private int userId;
-	private Timestamp createTime;
-	private String orderStatus;
-	private String kind;
+    private Integer orderId;
 
-	public Order(int userId, Timestamp createTime, String orderStatus, String kind) {
-		this.userId = userId;
-		this.createTime = createTime;
-		this.orderStatus = orderStatus;
-		this.kind = kind;
-	}
+    private Integer userId;
 
-	@Override
-	public String toString() {
-		return "Order{" +
-				"orderId=" + orderId +
-				", userId=" + userId +
-				", createTime=" + createTime +
-				", orderStatus='" + orderStatus + '\'' +
-				", kind='" + kind + '\'' +
-				'}';
-	}
+    private Date createTime;
 
-	public int getOrderId() {
-		return orderId;
-	}
+    private String orderStatus;
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
+    private String kind;
 
-	public int getUserId() {
-		return userId;
-	}
+    public Integer getOrderId() {
+        return orderId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public String getOrderStatus() {
-		return orderStatus;
-	}
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
-	}
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-	public String getKind() {
-		return kind;
-	}
+    public String getOrderStatus() {
+        return orderStatus;
+    }
 
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind == null ? null : kind.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", userId=" + userId +
+                ", createTime=" + createTime +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", kind='" + kind + '\'' +
+                '}';
+    }
 }

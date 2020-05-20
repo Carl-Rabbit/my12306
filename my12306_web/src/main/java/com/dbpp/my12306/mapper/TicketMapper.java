@@ -1,13 +1,17 @@
 package com.dbpp.my12306.mapper;
 
-import org.springframework.stereotype.Repository;
+import com.dbpp.my12306.entity.Ticket;
 
-@Repository
 public interface TicketMapper {
-//	int count();
-//	int countAllOf(int userId);
-//	Order getById(int id);
-//	List<Order> getAll();
-//	List<Order> getAllOf(int userId);
-//	int payOrder(int id);
+    int deleteByPrimaryKey(Integer ticketId);
+
+    int insert(Ticket record);
+
+    int insertSelective(Ticket record);
+
+    Ticket selectByPrimaryKey(Integer ticketId);
+
+    int updateByPrimaryKeySelective(Ticket record);
+
+    int updateByPrimaryKey(Ticket record);
 }

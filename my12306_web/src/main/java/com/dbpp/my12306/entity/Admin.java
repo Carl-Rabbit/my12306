@@ -1,74 +1,64 @@
 package com.dbpp.my12306.entity;
 
 public class Admin {
-	private int adminId;
-	private String adminName;
-	private String password;
-	private String kind;
-	private String available;
+    private Integer adminId;
 
-	public Admin(int adminId, String adminName, String password, String kind, String available) {
-		this.adminId = adminId;
-		this.adminName = adminName;
-		this.password = password;
-		this.kind = kind;
-		this.available = available;
-	}
+    private String adminName;
 
-	public Admin(String adminName, String password, String kind) {
-		this.adminName = adminName;
-		this.password = password;
-		this.kind = kind;
-	}
+    private String password;
 
-	public int getAdminId() {
-		return adminId;
-	}
+    private String kind;
 
-	public void setAdminId(int adminId) {
-		this.adminId = adminId;
-	}
+    private String available;
 
-	public String getAdminName() {
-		return adminName;
-	}
+    public Integer getAdminId() {
+        return adminId;
+    }
 
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
-	}
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getAdminName() {
+        return adminName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setAdminName(String adminName) {
+        this.adminName = adminName == null ? null : adminName.trim();
+    }
 
-	public String getKind() {
-		return kind;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
 
-	public String getAvailable() {
-		return available;
-	}
+    public String getKind() {
+        return kind;
+    }
 
-	public void setAvailable(String available) {
-		this.available = available;
-	}
+    public void setKind(String kind) {
+        this.kind = kind == null ? null : kind.trim();
+    }
 
-	@Override
-	public String toString() {
-		return "Admin{" +
-				"adminId=" + adminId +
-				", adminName=" + adminName +
-				", password='" + password + '\'' +
-				", kind='" + kind + '\'' +
-				", available='" + available + '\'' +
-				'}';
-	}
+    public String getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(String available) {
+        this.available = available == null ? null : available.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "adminId=" + adminId +
+                ", adminName='" + adminName + '\'' +
+                ", password='" + password + '\'' +
+                ", kind='" + kind + '\'' +
+                ", available='" + available + '\'' +
+                '}';
+    }
 }

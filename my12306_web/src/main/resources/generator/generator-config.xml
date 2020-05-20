@@ -42,54 +42,68 @@
         </javaClientGenerator>
 
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="admins" domainObjectName="Admin" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="admin_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="admins" domainObjectName="Admin" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="admin_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="cities" domainObjectName="City" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="city_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="cities" domainObjectName="City" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="city_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="orders" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="city_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="orders" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="order_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="route_schedule" domainObjectName="RouteSchedule" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="route_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="route_schedule" domainObjectName="RouteSchedule" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="route_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="stations" domainObjectName="Station" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="station_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="stations" domainObjectName="Station" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="station_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="time_details" domainObjectName="TimeDetail" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="time_detail_id" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="tickets" domainObjectName="Ticket" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="ticket_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
 
-        <table tableName="trains" domainObjectName="Train" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <property name="useActualColumnNames" value="false"/>
-            <!-- 数据库表主键 -->
-            <generatedKey column="train_no" sqlStatement="Postgres" identity="true"/>
-        </table>
+<!--        <table tableName="time_details" domainObjectName="TimeDetail" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="time_detail_id" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
+
+<!--        <table tableName="trains" domainObjectName="Train" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <property name="useActualColumnNames" value="false"/>-->
+<!--            &lt;!&ndash; 数据库表主键 &ndash;&gt;-->
+<!--            <generatedKey column="train_no" sqlStatement="Postgres" identity="true"/>-->
+<!--        </table>-->
+
+            <table tableName="trains123" domainObjectName="Train123" enableCountByExample="false" enableUpdateByExample="false"
+                   enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+                <property name="useActualColumnNames" value="false"/>
+                <!-- 数据库表主键 -->
+                <generatedKey column="train_no" sqlStatement="Postgres" identity="true"/>
+            </table>
     </context>
 
 </generatorConfiguration>
