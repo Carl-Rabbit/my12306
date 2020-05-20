@@ -207,7 +207,8 @@ public class TrainLoader {
 			}
 
 			start = System.currentTimeMillis();
-			while (data.next()) {
+			int n = 0;
+			while (data.next() && n++ < 2) {
 				char ch = data.getString("train_code").charAt(0);
 				switch (ch) {
 					case 'C':

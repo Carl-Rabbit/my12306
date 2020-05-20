@@ -1,4 +1,4 @@
-host = localhost
+host = 120.76.175.113
 database = my_railway
 user = rw_admin_0
 password = 123456

@@ -23,8 +23,3 @@ alter table order_seat
     add foreign key (seat_id) references seats (seat_id);
 
 -- /not run for now
-
--- union pk
-
-alter table order_seat
- add primary key (ticket_id, time_detail_id, route_id, seat_id);

@@ -17,7 +17,7 @@ create table seats
 
 alter table seats
     add foreign key (train_no) references trains (train_no)
-        on update cascade;
+        on update cascade on delete cascade;
 
 drop index if exists seats_train_no_fk_idx;
 create index seats_train_no_fk_idx on seats (train_no);
