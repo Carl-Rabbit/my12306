@@ -1,0 +1,10 @@
+### success 1
+GET {{baseUrl}}/api/city?id=1
+
+### success 2
+GET {{baseUrl}}/api/coty
+
+### fail: require at least one param
+GET {{baseUrl}}/api/city
+
+###

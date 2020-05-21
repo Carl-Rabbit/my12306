@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.Properties;
 
 public class TrainLoader {
-	private static final int BATCH_SIZE = 5000;
+	private static final int BATCH_SIZE = 15;
 	private static String cnfPath = "loader.cnf";
 
 	private static Connection con = null;
@@ -198,7 +198,7 @@ public class TrainLoader {
 					prop.getProperty("user"), prop.getProperty("password"));
 			if (con != null) {
 				stmt0 = con.createStatement();
-				data = stmt0.executeQuery("select * from route_schedule");
+				data = stmt0.executeQuery("select * from trains");
 			}
 
 			if (data == null) {
@@ -208,8 +208,8 @@ public class TrainLoader {
 
 			start = System.currentTimeMillis();
 			int n = 0;
-			while (data.next() && n++ < 2) {
-				char ch = data.getString("train_code").charAt(0);
+			while (data.next()) {
+				char ch = data.getString("train_kind").charAt(0);
 				switch (ch) {
 					case 'C':
 					case 'D':
@@ -222,10 +222,16 @@ public class TrainLoader {
 					default:
 						loadTrainSeatsN(data.getString("train_no"));
 				}
+				if (cnt % BATCH_SIZE == 0) {
+					stmt.executeBatch();
+					stmt.clearBatch();
+					System.out.println("Finish: " + cnt);
+				}
 				cnt ++;
 			}
 			if (cnt % BATCH_SIZE != 0) {
 				stmt.executeBatch();
+				System.out.println("Finish: " + cnt);
 			}
 			con.commit();
 			end = System.currentTimeMillis();

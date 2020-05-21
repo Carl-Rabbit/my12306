@@ -82,14 +82,6 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
-            <properties>
-                <logback.loglevel>DEBUG</logback.loglevel>
-                <spring.profiles.active>dev</spring.profiles.active>
-                <profileActive>dev</profileActive>
-            </properties>
-        </profile>
-        <profile>
             <id>cloud</id>
             <activation>
                 <activeByDefault>true</activeByDefault>

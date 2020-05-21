@@ -43,7 +43,6 @@ public class PassengerService {
 	 * @return response set: number of users
 	 */
 	public ResponseSet<Integer> countAllOf(int userId) {
-		String event = "Passenger count for userId=" + userId + ".";
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
 			ret.setStatus(ResultCode.SUCCESS);
