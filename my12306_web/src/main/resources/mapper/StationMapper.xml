@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbpp.my12306.mapper.StationMapper" >
+  <resultMap id="BaseResultMap" type="com.dbpp.my12306.entity.Station" >
+    <id column="station_id" property="stationId" jdbcType="INTEGER" />
+    <result column="station_name" property="stationName" jdbcType="VARCHAR" />
+    <result column="station_code" property="stationCode" jdbcType="CHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    station_id, station_name, station_code, city_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from stations
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from stations
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dbpp.my12306.entity.Station" >
+    <selectKey resultType="java.lang.Integer" keyProperty="stationId" order="AFTER" >
+      Postgres
+    </selectKey>
+    insert into stations (station_name, station_code, city_id
+      )
+    values (#{stationName,jdbcType=VARCHAR}, #{stationCode,jdbcType=CHAR}, #{cityId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Station" >
+    <selectKey resultType="java.lang.Integer" keyProperty="stationId" order="AFTER" >
+      Postgres
+    </selectKey>
+    insert into stations
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stationName != null" >
+        station_name,
+      </if>
+      <if test="stationCode != null" >
+        station_code,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stationName != null" >
+        #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationCode != null" >
+        #{stationCode,jdbcType=CHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dbpp.my12306.entity.Station" >
+    update stations
+    <set >
+      <if test="stationName != null" >
+        station_name = #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationCode != null" >
+        station_code = #{stationCode,jdbcType=CHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dbpp.my12306.entity.Station" >
+    update stations
+    set station_name = #{stationName,jdbcType=VARCHAR},
+      station_code = #{stationCode,jdbcType=CHAR},
+      city_id = #{cityId,jdbcType=INTEGER}
+    where station_id = #{stationId,jdbcType=INTEGER}
+  </update>
+</mapper>
