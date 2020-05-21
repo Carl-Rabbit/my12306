@@ -2,9 +2,9 @@
 GET {{baseUrl}}/api/city?id=1
 
 ### success 2
-GET {{baseUrl}}/api/coty
+GET {{baseUrl}}/api/city?name=深圳
 
-### fail: require at least one param
-GET {{baseUrl}}/api/city
+### success 3
+GET {{baseUrl}}/api/city?province=广东
 
 ###

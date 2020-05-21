@@ -5,8 +5,8 @@
 with q as (select * -- get all time_details satisfy station code and date
            from time_details as td
                     join route_schedule as rs
-                         on td.route_code = rs.route_code
-           where date = d_date
+                         on td.train_code = rs.train_code
+           where depart_date = '2020-5-29'::date
              and (station_code = s_st or station_code = t_st))
 select *
 from q as q1
