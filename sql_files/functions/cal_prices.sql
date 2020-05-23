@@ -1,4 +1,4 @@
-create or replace function cal_prices(train_kind char, mileage integer)
+create or replace function tmp_cal_prices(train_kind char, mileage integer)
     returns money[]
 as
 $$
@@ -199,3 +199,31 @@ begin
     return array [price1, price2, price3, price4, price5, price6];
 end;
 $$ language plpgsql;
+
+-- update to database
+
+create or replace function tmp_prices_fix() returns void
+as
+$$
+declare
+    rc     record;
+    prices money[];
+begin
+    for rc in (select * from time_details)
+        loop
+            prices := tmp_cal_prices(substr(rc.train_code, 1, 1),
+                                 rc.mileage);
+
+            update time_details
+            set aw_price = prices[1],
+                az_price = prices[2],
+                bw_price = prices[3],
+                bz_price = prices[4],
+                cw_price = prices[5],
+                cz_price = prices[6]
+            where time_detail_id = rc.time_detail_id;
+        end loop;
+end;
+$$ language plpgsql;
+
+select tmp_prices_fix()
