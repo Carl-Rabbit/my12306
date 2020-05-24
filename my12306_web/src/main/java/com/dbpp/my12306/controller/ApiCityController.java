@@ -58,7 +58,7 @@ public class ApiCityController {
 
 	@RequestMapping(value = "/admin/city", method = RequestMethod.POST)
 	public ResponseSet<?> add(@RequestBody Map<String, String> m,
-	                               HttpServletRequest request) {
+	                          HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
 			return auth;

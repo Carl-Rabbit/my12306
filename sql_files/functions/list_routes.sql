@@ -22,13 +22,20 @@ create or replace function list_routes(from_str varchar,
                 bw_rest       integer,
                 bz_rest       integer,
                 cw_rest       integer,
-                cz_rest       integer
+                cz_rest       integer,
+                aw_price      numeric(7, 2),
+                az_price      numeric(7, 2),
+                bw_price      numeric(7, 2),
+                bz_price      numeric(7, 2),
+                cw_price      numeric(7, 2),
+                cz_price      numeric(7, 2)
             )
 as
 $$
 declare
-    tmp_r    record;
-    rest_arr integer[];
+    tmp_r     record;
+    rest_arr  integer[];
+    price_arr numeric(7, 2)[];
 begin
     -- find station code
     drop table if exists tmp_from_st;
@@ -42,17 +49,37 @@ begin
         id integer
     );
 
+--     insert into tmp_from_st
+--     select station_id
+--     from cities as c
+--              join stations s on c.city_id = s.city_id
+--     where c.name like '%' || from_str || '%'
+--        or s.station_name like '%' || from_str || '%';
+--
+--     insert into tmp_to_st
+--     select station_id
+--     from cities as c
+--              join stations s on c.city_id = s.city_id
+--     where name like '%' || to_str || '%'
+--        or s.station_name like '%' || to_str || '%';
+
     insert into tmp_from_st
     select station_id
-    from cities
-             join stations s on cities.city_id = s.city_id
-    where name like '%' || from_str || '%';
+    from stations as s
+             join cities c on s.city_id = c.city_id
+    where s.city_id in (select city_id
+                        from stations as s
+                        where s.station_name like '%' || from_str || '%')
+       or c.name like '%' || from_str || '%';
 
     insert into tmp_to_st
     select station_id
-    from cities
-             join stations s on cities.city_id = s.city_id
-    where name like '%' || to_str || '%';
+    from stations as s
+             join cities c on s.city_id = c.city_id
+    where s.city_id in (select city_id
+                        from stations as s
+                        where s.station_name like '%' || to_str || '%')
+       or c.name like '%' || to_str || '%';
 
     for tmp_r in (with q as (select td.*,     -- tmp_r: the record of train satisfied
                                     rs.status -- get all time_details satisfy station code and date
@@ -150,6 +177,18 @@ begin
             bz_rest := rest_arr[4];
             cw_rest := rest_arr[5];
             cz_rest := rest_arr[6];
+
+            -- fill prices
+
+            price_arr := cal_prices(substr(tmp_r.train_code, 1, 1),
+                                    tmp_r.mileage);
+            aw_price := price_arr[1];
+            az_price := price_arr[2];
+            bw_price := price_arr[3];
+            bz_price := price_arr[4];
+            cw_price := price_arr[5];
+            cz_price := price_arr[6];
+
             return next;
         end loop;
 
@@ -208,12 +247,24 @@ from (with template as (
            on t.class = x2.class and t.type = x2.type
       order by class, type) rest_tickes;
 
+select station_id
+from cities as c
+         join stations s on c.city_id = s.city_id
+where c.name like '%' || '福田' || '%'
+   or s.station_name like '%' || '福田' || '%';
+
+select *
+from stations as s
+where s.city_id in (select city_id
+                    from stations as s
+                    where s.station_name like '%贵阳%');
+
 -------------------
 -- test
 -------------------
 
 select *
-from list_routes('贵阳', '深圳', '2020-05-29'::date);
+from list_routes('白云北', '福田', '2020-05-29'::date);
 select *
-from list_routes('深圳', '贵阳', '2020-05-29'::date);
+from list_routes('福田', '贵阳', '2020-05-29'::date);
 

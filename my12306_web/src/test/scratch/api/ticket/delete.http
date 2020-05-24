@@ -1,0 +1,9 @@
+### success (admin)
+DELETE {{baseUrl}}/api/admin/ticket/1
+Authorization: admin:admin
+
+### fail: no such ticket
+DELETE {{baseUrl}}/api/admin/ticket/-1
+Authorization: admin:admin
+
+###

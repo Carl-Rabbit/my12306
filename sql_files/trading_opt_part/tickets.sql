@@ -1,7 +1,7 @@
 create table tickets
 (
     ticket_id    serial primary key,
-    entrance     varchar(3) not null,
+    entrance     varchar(3),
     ticket_price money      not null,
     passenger_id int        not null,
     order_id     int        not null,

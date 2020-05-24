@@ -11,7 +11,7 @@ public class Order {
 
     private String orderStatus;
 
-    private String kind;
+    private String available;
 
     public Integer getOrderId() {
         return orderId;
@@ -45,12 +45,12 @@ public class Order {
         this.orderStatus = orderStatus == null ? null : orderStatus.trim();
     }
 
-    public String getKind() {
-        return kind;
+    public String getAvailable() {
+        return available;
     }
 
-    public void setKind(String kind) {
-        this.kind = kind == null ? null : kind.trim();
+    public void setAvailable(String available) {
+        this.available = available == null ? null : available.trim();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Order {
                 ", userId=" + userId +
                 ", createTime=" + createTime +
                 ", orderStatus='" + orderStatus + '\'' +
-                ", kind='" + kind + '\'' +
+                ", available='" + available + '\'' +
                 '}';
     }
 }

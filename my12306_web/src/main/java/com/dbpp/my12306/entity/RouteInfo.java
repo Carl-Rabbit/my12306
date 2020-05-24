@@ -1,5 +1,6 @@
 package com.dbpp.my12306.entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -29,12 +30,12 @@ public class RouteInfo {
 	private Integer cwRest;
 	private Integer czRest;
 
-	private Integer awPrice;
-	private Integer azPrice;
-	private Integer bwPrice;
-	private Integer bzPrice;
-	private Integer cwPrice;
-	private Integer czPrice;
+	private BigDecimal awPrice;
+	private BigDecimal azPrice;
+	private BigDecimal bwPrice;
+	private BigDecimal bzPrice;
+	private BigDecimal cwPrice;
+	private BigDecimal czPrice;
 
 	public String getTrainCode() {
 		return trainCode;
@@ -156,51 +157,51 @@ public class RouteInfo {
 		this.czRest = czRest;
 	}
 
-	public Integer getAwPrice() {
+	public BigDecimal getAwPrice() {
 		return awPrice;
 	}
 
-	public void setAwPrice(Integer awPrice) {
+	public void setAwPrice(BigDecimal awPrice) {
 		this.awPrice = awPrice;
 	}
 
-	public Integer getAzPrice() {
+	public BigDecimal getAzPrice() {
 		return azPrice;
 	}
 
-	public void setAzPrice(Integer azPrice) {
+	public void setAzPrice(BigDecimal azPrice) {
 		this.azPrice = azPrice;
 	}
 
-	public Integer getBwPrice() {
+	public BigDecimal getBwPrice() {
 		return bwPrice;
 	}
 
-	public void setBwPrice(Integer bwPrice) {
+	public void setBwPrice(BigDecimal bwPrice) {
 		this.bwPrice = bwPrice;
 	}
 
-	public Integer getBzPrice() {
+	public BigDecimal getBzPrice() {
 		return bzPrice;
 	}
 
-	public void setBzPrice(Integer bzPrice) {
+	public void setBzPrice(BigDecimal bzPrice) {
 		this.bzPrice = bzPrice;
 	}
 
-	public Integer getCwPrice() {
+	public BigDecimal getCwPrice() {
 		return cwPrice;
 	}
 
-	public void setCwPrice(Integer cwPrice) {
+	public void setCwPrice(BigDecimal cwPrice) {
 		this.cwPrice = cwPrice;
 	}
 
-	public Integer getCzPrice() {
+	public BigDecimal getCzPrice() {
 		return czPrice;
 	}
 
-	public void setCzPrice(Integer czPrice) {
+	public void setCzPrice(BigDecimal czPrice) {
 		this.czPrice = czPrice;
 	}
 

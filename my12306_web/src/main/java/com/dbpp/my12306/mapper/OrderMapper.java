@@ -1,7 +1,9 @@
 package com.dbpp.my12306.mapper;
 
 import com.dbpp.my12306.entity.Order;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer orderId);
 

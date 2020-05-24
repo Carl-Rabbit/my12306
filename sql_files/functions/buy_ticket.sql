@@ -16,21 +16,21 @@ create or replace function buy_tickets(user_id_ integer,
                                        prefer char array)
     returns table
             (
-                r_ticket_id integer,
-                r_mileage   integer
+                r_ticket_id integer
             )
 as
 $$
 declare
-    len         integer := array_length(psg_id, 1);
-    route_id_   integer;
-    order_id_   integer;
-    ticket_id_  integer;
-    seat_record record;
-    td_id       integer;
-    mile        integer;
-    st_idx      integer;
-    tot_mile    integer;
+    len        integer := array_length(psg_id, 1);
+    route_id_  integer;
+    order_id_  integer;
+    ticket_id_ integer;
+    seat_rc    record;
+    td_id      integer;
+    mile       integer;
+    st_idx     integer;
+    tot_mile   integer;
+    prices     numeric(7, 2)[];
 begin
     -- create order
     insert into orders (user_id)
@@ -48,7 +48,6 @@ begin
 
             if route_id_ is null then
                 r_ticket_id := -1;
-                r_mileage := null;
                 return next;
                 continue;
             end if;
@@ -90,14 +89,13 @@ begin
                                     and station_index between from_index[i] and to_index[i]) x;
 
             -- get prefer seat
-            select * into seat_record from tmp_seats where code = prefer[i] limit 1;
-            if seat_record is null then
+            select * into seat_rc from tmp_seats where code = prefer[i] limit 1;
+            if seat_rc is null then
                 -- get other seat
-                select * into seat_record from tmp_seats limit 1;
-                if seat_record is null then
+                select * into seat_rc from tmp_seats limit 1;
+                if seat_rc is null then
                     -- no rest seat
                     r_ticket_id := -1;
-                    r_mileage := null;
                     return next;
                     continue;
                 end if;
@@ -122,18 +120,30 @@ begin
                     end if;
 
                     insert into order_seat (ticket_id, time_detail_id, route_id, seat_id)
-                    values (ticket_id_, td_id, route_id_, seat_record.seat_id);
+                    values (ticket_id_, td_id, route_id_, seat_rc.seat_id);
                 end loop;
 
+            -- update tickets
+
+            prices := cal_prices(substr(tr_code[i], 1, 1),
+                                 mile);
+
             update tickets
-            set seat_info = seat_record,
-                entrance  = '01' || case
-                                        when seat_record.carriage <= 8 then 'A'
-                                        else 'B' end
+            set seat_info    = seat_rc,
+                entrance     = '01' || case
+                                           when seat_rc.carriage <= 8 then 'A'
+                                           else 'B' end,
+                ticket_price = case
+                                   when seat_rc.class = 'A' and seat_rc.type = 'W' then prices[1]
+                                   when seat_rc.class = 'A' and seat_rc.type = 'Z' then prices[2]
+                                   when seat_rc.class = 'B' and seat_rc.type = 'W' then prices[3]
+                                   when seat_rc.class = 'B' and seat_rc.type = 'Z' then prices[4]
+                                   when seat_rc.class = 'C' and seat_rc.type = 'W' then prices[5]
+                                   when seat_rc.class = 'C' and seat_rc.type = 'Z' then prices[6]
+                    end
             where ticket_id = ticket_id_;
 
             r_ticket_id := ticket_id_;
-            r_mileage := tot_mile;
             return next;
         end loop;
 end;
@@ -199,6 +209,8 @@ drop function test_func(varchar array);
 -----------------------------
 begin;
 
+select * from time_details as td where train_code = 'G2924';
+
 select *
 from buy_tickets(1,
                  array [1],
@@ -206,8 +218,8 @@ from buy_tickets(1,
                  array [1],
                  array [4],
                  array [date'2020-05-29'],
-                 array ['A'],
-                 array ['Z'],
+                 array ['B'],
+                 array ['N'],
                  array ['F']);
 
 select *
