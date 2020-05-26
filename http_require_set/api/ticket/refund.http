@@ -19,3 +19,13 @@ Content-Type: application/json
 }
 
 ###
+PUT {{baseUrl}}/api/ticket
+Authorization: TestUser0:123456
+Content-Type: application/json
+
+{
+  "ticket_id": 10715,
+  "opt": "refund"
+}
+
+###

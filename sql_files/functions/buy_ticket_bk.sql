@@ -53,10 +53,11 @@ begin
                 continue;
             end if;
 
-            for try in 1..20 -- try 10 times to lock seat
+            for try in 1..5 -- try 10 times to lock seat
                 loop
 
                     -- get valid seat
+--                     drop table if exists tmp_seats;
                     create local temp table if not exists tmp_seats
                     (
                         seat_id  bigint,
@@ -92,10 +93,9 @@ begin
                                         on os.time_detail_id = td.time_detail_id
                                             and station_index between from_index[i] and to_index[i] - 1) x;
 
---                     select seat_id into tmp from tmp_seats limit 1;
-                    select count(*) into tmp from tmp_seats;
+                    select seat_id into tmp from tmp_seats limit 1;
 
-                    if tmp != 0 then
+                    if tmp is not null then
 
                         -- get prefer seat
                         select *
@@ -145,8 +145,8 @@ begin
 
                             -- update tickets
 
---                             prices := cal_prices(substr(tr_code[i], 1, 1),
---                                                  mile);
+                            prices := cal_prices(substr(tr_code[i], 1, 1),
+                                                 mile);
 
                             update tickets
                             set seat_info    = seat_rc,
@@ -172,7 +172,7 @@ begin
                         end;
 
                     else
-                        r_ticket_id := -3;
+                        r_ticket_id := -2;
                     end if;
 
                     exit when r_ticket_id > 0;
@@ -185,7 +185,7 @@ begin
 
 exception
     when others then
-        return query select -4;
+        return query select -3;
 end;
 $$ language plpgsql;
 
