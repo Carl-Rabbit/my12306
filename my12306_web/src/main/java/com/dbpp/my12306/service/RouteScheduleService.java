@@ -35,7 +35,11 @@ public class RouteScheduleService {
 		return routeScheduleMapper.deleteByPrimaryKey(routeScheduleId);
 	}
 
-	public Integer deleteAllOf(String trainCode) {
-		return routeScheduleMapper.deleteByTrainCode(trainCode);
+	public Integer deleteAllOf(String trainCode, String departDate) {
+		return routeScheduleMapper.deleteByCondition(trainCode, departDate);
+	}
+
+	public Integer generate(String departDate) {
+		return routeScheduleMapper.generate(departDate);
 	}
 }

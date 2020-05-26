@@ -1,0 +1,13 @@
+### success (admin)
+DELETE {{baseUrl}}/api/admin/seat/7498041
+Authorization: admin:admin
+
+### success (admin) all off
+DELETE {{baseUrl}}/api/admin/seats?train_no=12000T999000
+Authorization: admin:admin
+
+### fail: no such seat
+DELETE {{baseUrl}}/api/admin/seat/-1
+Authorization: admin:admin
+
+###

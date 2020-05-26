@@ -1,0 +1,43 @@
+### success
+POST {{baseUrl}}/api/admin/seat
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "12000T999000",
+  "carriage": 99,
+  "location": 1,
+  "code": "A",
+  "cls": "A",
+  "type": "W"
+}
+
+### fail: already exits
+POST {{baseUrl}}/api/admin/seat
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "58000D64170D",
+  "carriage": 1,
+  "location": 1,
+  "code": "1",
+  "cls": "A",
+  "type": "W"
+}
+
+### fail: train no len != 12
+POST {{baseUrl}}/api/admin/seat
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "12000T99900",
+  "carriage": 99,
+  "location": 1,
+  "code": "A",
+  "cls": "A",
+  "type": "W"
+}
+
+###

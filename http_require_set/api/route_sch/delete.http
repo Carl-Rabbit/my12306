@@ -6,6 +6,10 @@ Authorization: admin:admin
 DELETE {{baseUrl}}/api/admin/route_sch?train_code=T999
 Authorization: admin:admin
 
+### success (admin): delete all by date
+DELETE {{baseUrl}}/api/admin/route_sch?depart_date=2020-05-31
+Authorization: admin:admin
+
 ### fail: no such time_detail
 DELETE {{baseUrl}}/api/admin/time_detail/-1
 Authorization: admin:admin

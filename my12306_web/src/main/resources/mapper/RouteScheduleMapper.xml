@@ -96,9 +96,22 @@
         where train_code = #{trainCode}
     </select>
 
-    <delete id="deleteByTrainCode">
+    <delete id="deleteByCondition">
         delete
         from route_schedule
-        where train_code = #{trainCode}
+        <where>
+            <if test="trainCode != null">
+                train_code = #{trainCode}
+            </if>
+            <if test="departDate != null">
+                depart_date = #{departDate}::date
+            </if>
+        </where>
     </delete>
+
+    <insert id="generate">
+        insert into route_schedule(train_code, train_no, depart_date)
+        select *, #{departDate}::date as depart_date
+        from route_sc_template
+    </insert>
 </mapper>

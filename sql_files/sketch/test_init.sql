@@ -10,4 +10,4 @@ with q as (select *
            from tickets
            where ticket_id > 5000)
 select distinct seat_info
-from q
+from q;

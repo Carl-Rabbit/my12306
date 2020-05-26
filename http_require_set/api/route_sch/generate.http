@@ -1,0 +1,8 @@
+### success (admin)
+PUT {{baseUrl}}/api/admin/route_sch/opt?date=2020-05-31
+Authorization: admin:admin
+
+### helper: list the train
+GET {{baseUrl}}/api/routes/昆明/福田/2020-05-31
+
+###

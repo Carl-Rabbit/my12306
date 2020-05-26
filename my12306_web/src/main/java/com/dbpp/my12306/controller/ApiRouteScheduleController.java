@@ -32,7 +32,7 @@ public class ApiRouteScheduleController {
 
 	@RequestMapping(value = "/admin/route_sch/{train_code}", method = RequestMethod.GET)
 	public ResponseSet<?> getInfoAdminAllOf(@PathVariable(name = "train_code") String trainCode,
-	                                   HttpServletRequest request) {
+	                                        HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
 			return auth;
@@ -118,6 +118,60 @@ public class ApiRouteScheduleController {
 		}
 		loggerService.info(logger, "ApiRouteScheduleController.add auth=" + auth.getData().getAdminName()
 				+ " m=" + m, ret.getStatus() + " " + ret.getDetail());
+		return ret;
+	}
+
+	@RequestMapping(value = "/admin/route_sch/opt", method = RequestMethod.PUT)
+	public ResponseSet<?> generate(@RequestParam("date") String departDate,
+	                               HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+
+		ResponseSet<Integer> ret = new ResponseSet<>();
+		try {
+			while (true) {
+				if (departDate == null) {
+					ret.setStatus(ResultCode.PARAMS_ERROR);
+					ret.setDetail("Missing some required param.");
+					break;
+				}
+				if (!departDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+					ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Date param must in format YYYY-MM-DD.", null);
+					break;
+				}
+
+				int r = routeScheduleService.generate(departDate);
+
+				ret.setStatus(ResultCode.CREATED);
+				ret.setDetail("Route schedule generated");
+				ret.setData(r);
+
+				break;
+			}
+
+		} catch (Exception e) {
+			ret.setDetail(null);
+			if (e.getCause() == null) {
+				ret.setDetail(e.getMessage());
+			} else {
+				if (e.getCause().getMessage().contains("duplicate key")) {
+					ret.setStatus(ResultCode.SUCCESS_IS_HAVE);
+				} else if (e.getCause().getMessage().contains("row contains")) {
+					ret.setStatus(ResultCode.CONS_ERROR);
+				} else {
+					ret.setStatus(ResultCode.EXCEPTION);
+				}
+				String msg = e.getCause().getMessage();
+				ret.setDetail((msg.contains("详细：")) ?
+						msg.split("详细：")[1] : msg);
+			}
+			e.printStackTrace();
+		}
+		loggerService.info(logger, "ApiRouteScheduleController.add auth="
+						+ auth.getData().getAdminName() + " departDate=" + departDate,
+				ret.getStatus() + " " + ret.getDetail());
 		return ret;
 	}
 
@@ -229,7 +283,8 @@ public class ApiRouteScheduleController {
 	}
 
 	@RequestMapping(value = "/admin/route_sch", method = RequestMethod.DELETE)
-	public ResponseSet<?> deleteAllOf(@RequestParam(name = "train_code") String trainCode,
+	public ResponseSet<?> deleteAllOf(@RequestParam(name = "train_code", required = false) String trainCode,
+	                                  @RequestParam(name = "depart_date", required = false) String departDate,
 	                                  HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
@@ -238,16 +293,28 @@ public class ApiRouteScheduleController {
 
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			int r = routeScheduleService.deleteAllOf(trainCode);
-			if (r >= 1) {
-				ret.setDetail("Delete completed, " + r + " row(s) affected.");
-				ret.setStatus(ResultCode.SUCCESS);
-			} else {
-				ret.setDetail("No such time detail.");
-				ret.setStatus(ResultCode.FAIL);
+			while (true) {
+				if (trainCode == null && departDate == null) {
+					ret.setStatus(ResultCode.PARAMS_ERROR);
+					ret.setDetail("Missing some required params.");
+					break;
+				}
+				if (trainCode != null && departDate != null) {
+					ret.setStatus(ResultCode.PARAMS_ERROR);
+					ret.setDetail("Require only one param, giving two.");
+					break;
+				}
+				int r = routeScheduleService.deleteAllOf(trainCode, departDate);
+				if (r >= 1) {
+					ret.setDetail("Delete completed, " + r + " row(s) affected.");
+					ret.setStatus(ResultCode.SUCCESS);
+				} else {
+					ret.setDetail("No such time detail.");
+					ret.setStatus(ResultCode.FAIL);
+				}
+				ret.setData(r);
+				break;
 			}
-			ret.setData(r);
-
 
 		} catch (Exception e) {
 			ret.setData(null);

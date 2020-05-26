@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dbpp.my12306.mapper.SeatMapper">
+    <resultMap id="BaseResultMap" type="com.dbpp.my12306.entity.Seat">
+        <id column="seat_id" property="seatId" jdbcType="BIGINT"/>
+        <result column="train_no" property="trainNo" jdbcType="CHAR"/>
+        <result column="carriage" property="carriage" jdbcType="INTEGER"/>
+        <result column="location" property="location" jdbcType="SMALLINT"/>
+        <result column="code" property="code" jdbcType="CHAR"/>
+        <result column="class" property="cls" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="CHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        seat_id, train_no, carriage, location, code, class, type
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from seats
+        where seat_id = #{seatId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from seats
+        where seat_id = #{seatId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.dbpp.my12306.entity.Seat"
+            useGeneratedKeys="true" keyProperty="seatId" keyColumn="seat_id">
+        insert into seats (train_no, carriage, location,
+                           code, class, type)
+        values (#{trainNo,jdbcType=CHAR}, #{carriage,jdbcType=INTEGER}, #{location,jdbcType=SMALLINT},
+                #{code,jdbcType=CHAR}, #{cls,jdbcType=CHAR}, #{type,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Seat">
+        insert into seats
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="trainNo != null">
+                train_no,
+            </if>
+            <if test="carriage != null">
+                carriage,
+            </if>
+            <if test="location != null">
+                location,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="cls != null">
+                class,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="trainNo != null">
+                #{trainNo,jdbcType=CHAR},
+            </if>
+            <if test="carriage != null">
+                #{carriage,jdbcType=INTEGER},
+            </if>
+            <if test="location != null">
+                #{location,jdbcType=SMALLINT},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=CHAR},
+            </if>
+            <if test="class != null">
+                #{cls,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dbpp.my12306.entity.Seat">
+        update seats
+        <set>
+            <if test="trainNo != null">
+                train_no = #{trainNo,jdbcType=CHAR},
+            </if>
+            <if test="carriage != null">
+                carriage = #{carriage,jdbcType=INTEGER},
+            </if>
+            <if test="location != null">
+                location = #{location,jdbcType=SMALLINT},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=CHAR},
+            </if>
+            <if test="class != null">
+                class = #{cls,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=CHAR},
+            </if>
+        </set>
+        where seat_id = #{seatId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dbpp.my12306.entity.Seat">
+        update seats
+        set train_no = #{trainNo,jdbcType=CHAR},
+            carriage = #{carriage,jdbcType=INTEGER},
+            location = #{location,jdbcType=SMALLINT},
+            code     = #{code,jdbcType=CHAR},
+            class    = #{cls,jdbcType=CHAR},
+            type     = #{type,jdbcType=CHAR}
+        where seat_id = #{seatId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByTrainNo" resultMap="BaseResultMap">
+        select *
+        from seats
+        where train_no = #{train_no}
+    </select>
+
+    <delete id="deleteByTrainNo">
+        delete
+        from seats
+        where train_no = #{train_no}
+    </delete>
+</mapper>

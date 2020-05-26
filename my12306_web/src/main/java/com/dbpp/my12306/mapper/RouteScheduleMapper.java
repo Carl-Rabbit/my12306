@@ -21,5 +21,7 @@ public interface RouteScheduleMapper {
 
     List<RouteSchedule> selectByTrainCode(String trainCode);
 
-    int deleteByTrainCode(String trainCode);
+    int deleteByCondition(String trainCode, String departDate);
+
+    int generate(String departDate);
 }
