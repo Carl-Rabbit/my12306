@@ -1,0 +1,25 @@
+### success
+POST {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_code": "T999",
+  "train_no": "12000T999000",
+  "depart_date": "2020-05-29",
+  "status": "V"
+}
+
+### fail: date format is not valid
+POST {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_code": "T999",
+  "train_no": "12000T999000",
+  "depart_date": "202a-05-2b",
+  "status": "V"
+}
+
+###

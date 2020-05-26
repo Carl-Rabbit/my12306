@@ -1,0 +1,9 @@
+### add train instance
+POST {{baseUrl}}/api/admin/train
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "12000T999000",
+  "train_kind": "T"
+}

@@ -1,0 +1,33 @@
+### success
+POST {{baseUrl}}/api/admin/station
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "station_name": "油屋",
+  "station_code": "XYW",
+  "city_id": 376
+}
+
+### success
+POST {{baseUrl}}/api/admin/station
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "station_name": "油屋",
+  "city_id": 376
+}
+
+### fail: param error
+POST {{baseUrl}}/api/admin/city
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "station_name": "油屋",
+  "station_code": "XYW"
+}
+
+
+###

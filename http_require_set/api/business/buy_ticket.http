@@ -1,0 +1,64 @@
+### success
+POST {{baseUrl}}/api/routes
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+[
+  {
+    "psgId": 1,
+    "trainCode": "G2924",
+    "fromIndex": 1,
+    "toIndex": 3,
+    "date": "2020-05-29",
+    "seatCls": "A",
+    "seatType": "Z",
+    "prefer": "F"
+  },
+  {
+    "psgId": 2,
+    "trainCode": "G2924",
+    "fromIndex": 1,
+    "toIndex": 4,
+    "date": "2020-05-29",
+    "seatCls": "A",
+    "seatType": "Z"
+  }
+]
+
+### fail: date format error
+POST {{baseUrl}}/api/routes
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+[
+  {
+    "psgId": 1,
+    "trainCode": "G2924",
+    "fromIndex": 1,
+    "toIndex": 3,
+    "date": "2020-x5-29",
+    "seatCls": "A",
+    "seatType": "Z",
+    "prefer": "F"
+  }
+]
+
+### fail: other user's passenger
+POST {{baseUrl}}/api/routes
+Authorization: LittleWhiteCat:654321
+Content-Type: application/json
+
+[
+  {
+    "psgId": 1,
+    "trainCode": "G2924",
+    "fromIndex": 1,
+    "toIndex": 3,
+    "date": "2020-05-29",
+    "seatCls": "A",
+    "seatType": "Z",
+    "prefer": "F"
+  }
+]
+
+###

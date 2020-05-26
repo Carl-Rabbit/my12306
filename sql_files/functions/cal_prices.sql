@@ -1,5 +1,5 @@
-create or replace function tmp_cal_prices(train_kind char, mileage integer)
-    returns money[]
+create or replace function cal_prices(train_kind char, mileage integer)
+    returns numeric(7, 2)[]
 as
 $$
 declare
@@ -196,7 +196,12 @@ begin
             price5 := (mileage1 * p + plus) * (1 + 0.25 + 0.2 + 1.2) * 1.5 + 10;
         end if;
     end if;
-    return array [price1, price2, price3, price4, price5, price6];
+    return array [(price1 * 4)::numeric(10, 2),
+        (price2 * 3)::numeric(7, 2),
+        (price3 * 4)::numeric(7, 2),
+        (price4 * 3)::numeric(7, 2),
+        (price5 * 2)::numeric(7, 2),
+        (price6 * 2)::numeric(7, 2)];
 end;
 $$ language plpgsql;
 
@@ -211,7 +216,7 @@ declare
 begin
     for rc in (select * from time_details)
         loop
-            prices := tmp_cal_prices(substr(rc.train_code, 1, 1),
+            prices := cal_prices(substr(rc.train_code, 1, 1),
                                  rc.mileage);
 
             update time_details

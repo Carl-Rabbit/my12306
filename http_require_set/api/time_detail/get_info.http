@@ -1,0 +1,15 @@
+### success 1
+GET {{baseUrl}}/api/admin/time_detail/1
+Authorization: admin:admin
+
+### success 2
+# for the user view please see /business/list_route_detail.http
+GET {{baseUrl}}/api/admin/time_details?train_code=G407
+Authorization: admin:admin
+
+### success 3
+# for the user view please see /business/list_route_detail.http
+GET {{baseUrl}}/api/admin/time_details?train_code=T999
+Authorization: admin:admin
+
+###

@@ -20,10 +20,7 @@
     delete from stations
     where station_id = #{stationId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dbpp.my12306.entity.Station" >
-    <selectKey resultType="java.lang.Integer" keyProperty="stationId" order="AFTER" >
-      Postgres
-    </selectKey>
+  <insert id="insert" parameterType="com.dbpp.my12306.entity.Station" useGeneratedKeys="true" keyProperty="stationId" keyColumn="station_id">
     insert into stations (station_name, station_code, city_id
       )
     values (#{stationName,jdbcType=VARCHAR}, #{stationCode,jdbcType=CHAR}, #{cityId,jdbcType=INTEGER}
@@ -79,4 +76,22 @@
       city_id = #{cityId,jdbcType=INTEGER}
     where station_id = #{stationId,jdbcType=INTEGER}
   </update>
+
+  <select id="select" resultType="com.dbpp.my12306.entity.Station">
+    select * from stations as s
+    <if test="cityName != null">
+      join cities c on s.city_id = c.city_id
+    </if>
+    <where>
+      <if test="stationId != null">station_id = #{stationId}</if>
+      <if test="stationName != null">and station_name = #{stationName}</if>
+      <if test="cityName != null">and c.name = #{cityName}</if>
+    </where>
+  </select>
+
+  <delete id="deleteByName">
+    delete
+    from stations
+    where station_name = #{name}
+  </delete>
 </mapper>

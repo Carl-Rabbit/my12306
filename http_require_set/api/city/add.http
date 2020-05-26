@@ -1,0 +1,20 @@
+### success
+POST {{baseUrl}}/api/admin/city
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "city_name": "八原",
+  "province": "神都"
+}
+
+### fail: param error
+POST {{baseUrl}}/api/admin/city
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "city_name": "八原"
+}
+
+###

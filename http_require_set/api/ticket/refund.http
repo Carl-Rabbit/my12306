@@ -1,0 +1,21 @@
+### success
+PUT {{baseUrl}}/api/ticket
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+{
+  "ticket_id": 43,
+  "opt": "refund"
+}
+
+### fail: bad param
+PUT {{baseUrl}}/api/ticket
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+{
+  "ticket_id": 25,
+  "opt": "NULL opt"
+}
+
+###

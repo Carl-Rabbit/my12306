@@ -1,104 +1,174 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dbpp.my12306.mapper.TicketMapper" >
-  <resultMap id="BaseResultMap" type="com.dbpp.my12306.entity.Ticket" >
-    <id column="ticket_id" property="ticketId" jdbcType="INTEGER" />
-    <result column="entrance" property="entrance" jdbcType="VARCHAR" />
-    <result column="ticket_price" property="ticketPrice" jdbcType="DOUBLE" />
-    <result column="passenger_id" property="passengerId" jdbcType="INTEGER" />
-    <result column="order_id" property="orderId" jdbcType="INTEGER" />
-    <result column="ticket_kind" property="ticketKind" jdbcType="CHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    ticket_id, entrance, ticket_price, passenger_id, order_id, ticket_kind
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from tickets
-    where ticket_id = #{ticketId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tickets
-    where ticket_id = #{ticketId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.dbpp.my12306.entity.Ticket" >
-    <selectKey resultType="java.lang.Integer" keyProperty="ticketId" order="AFTER" >
-      Postgres
-    </selectKey>
-    insert into tickets (entrance, ticket_price, passenger_id, 
-      order_id, ticket_kind)
-    values (#{entrance,jdbcType=VARCHAR}, #{ticketPrice,jdbcType=DOUBLE}, #{passengerId,jdbcType=INTEGER}, 
-      #{orderId,jdbcType=INTEGER}, #{ticketKind,jdbcType=CHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Ticket" >
-    <selectKey resultType="java.lang.Integer" keyProperty="ticketId" order="AFTER" >
-      Postgres
-    </selectKey>
-    insert into tickets
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="entrance != null" >
-        entrance,
-      </if>
-      <if test="ticketPrice != null" >
-        ticket_price,
-      </if>
-      <if test="passengerId != null" >
-        passenger_id,
-      </if>
-      <if test="orderId != null" >
-        order_id,
-      </if>
-      <if test="ticketKind != null" >
-        ticket_kind,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="entrance != null" >
-        #{entrance,jdbcType=VARCHAR},
-      </if>
-      <if test="ticketPrice != null" >
-        #{ticketPrice,jdbcType=DOUBLE},
-      </if>
-      <if test="passengerId != null" >
-        #{passengerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=INTEGER},
-      </if>
-      <if test="ticketKind != null" >
-        #{ticketKind,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dbpp.my12306.entity.Ticket" >
-    update tickets
-    <set >
-      <if test="entrance != null" >
-        entrance = #{entrance,jdbcType=VARCHAR},
-      </if>
-      <if test="ticketPrice != null" >
-        ticket_price = #{ticketPrice,jdbcType=DOUBLE},
-      </if>
-      <if test="passengerId != null" >
-        passenger_id = #{passengerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=INTEGER},
-      </if>
-      <if test="ticketKind != null" >
-        ticket_kind = #{ticketKind,jdbcType=CHAR},
-      </if>
-    </set>
-    where ticket_id = #{ticketId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dbpp.my12306.entity.Ticket" >
-    update tickets
-    set entrance = #{entrance,jdbcType=VARCHAR},
-      ticket_price = #{ticketPrice,jdbcType=DOUBLE},
-      passenger_id = #{passengerId,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=INTEGER},
-      ticket_kind = #{ticketKind,jdbcType=CHAR}
-    where ticket_id = #{ticketId,jdbcType=INTEGER}
-  </update>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dbpp.my12306.mapper.TicketMapper">
+    <resultMap id="BaseResultMap" type="com.dbpp.my12306.entity.Ticket">
+        <id column="ticket_id" jdbcType="INTEGER" property="ticketId"/>
+        <result column="entrance" jdbcType="VARCHAR" property="entrance"/>
+        <result column="ticket_price" jdbcType="NUMERIC" property="ticketPrice"/>
+        <result column="passenger_id" jdbcType="INTEGER" property="passengerId"/>
+        <result column="order_id" jdbcType="INTEGER" property="orderId"/>
+        <result column="ticket_kind" jdbcType="CHAR" property="ticketKind"/>
+        <result column="seat_info" jdbcType="VARCHAR" property="seatInfo"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ticket_id, entrance, ticket_price, passenger_id, order_id, ticket_kind, seat_info, status
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tickets
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from tickets
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.dbpp.my12306.entity.Ticket">
+        <selectKey keyProperty="ticketId" order="AFTER" resultType="java.lang.Integer">
+            Postgres
+        </selectKey>
+        insert into tickets (entrance, ticket_price, passenger_id,
+        order_id, ticket_kind, seat_info
+        )
+        values (#{entrance,jdbcType=VARCHAR}, #{ticketPrice,jdbcType=DOUBLE}, #{passengerId,jdbcType=INTEGER},
+        #{orderId,jdbcType=INTEGER}, #{ticketKind,jdbcType=CHAR}, #{seatInfo,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Ticket">
+        <selectKey keyProperty="ticketId" order="AFTER" resultType="java.lang.Integer">
+            Postgres
+        </selectKey>
+        insert into tickets
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entrance != null">
+                entrance,
+            </if>
+            <if test="ticketPrice != null">
+                ticket_price,
+            </if>
+            <if test="passengerId != null">
+                passenger_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="ticketKind != null">
+                ticket_kind,
+            </if>
+            <if test="seatInfo != null">
+                seat_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entrance != null">
+                #{entrance,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketPrice != null">
+                #{ticketPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="passengerId != null">
+                #{passengerId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="ticketKind != null">
+                #{ticketKind,jdbcType=CHAR},
+            </if>
+            <if test="seatInfo != null">
+                #{seatInfo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dbpp.my12306.entity.Ticket">
+        update tickets
+        <set>
+            <if test="entrance != null">
+                entrance = #{entrance,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketPrice != null">
+                ticket_price = #{ticketPrice,jdbcType=DOUBLE},
+            </if>
+            <if test="passengerId != null">
+                passenger_id = #{passengerId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="ticketKind != null">
+                ticket_kind = #{ticketKind,jdbcType=CHAR},
+            </if>
+            <if test="seatInfo != null">
+                seat_info = #{seatInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                seat_info = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dbpp.my12306.entity.Ticket">
+        update tickets
+        set entrance     = #{entrance,jdbcType=VARCHAR},
+            ticket_price = #{ticketPrice,jdbcType=DOUBLE},
+            passenger_id = #{passengerId,jdbcType=INTEGER},
+            order_id     = #{orderId,jdbcType=INTEGER},
+            ticket_kind  = #{ticketKind,jdbcType=CHAR},
+            seat_info    = #{seatInfo,jdbcType=VARCHAR}
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="BuyRet" type="com.dbpp.my12306.entity.BuyRet">
+        <result column="r_ticket_id" jdbcType="VARCHAR" property="ticketId"/>
+        <result column="r_mileage" jdbcType="DOUBLE" property="mileage"/>
+    </resultMap>
+    <select id="buyTickets" resultType="Integer">
+        select * from buy_tickets(
+        #{userId},
+        <foreach collection="psgIdArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="trainCodeArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="fromIndexArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="toIndexArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="departDateArr" open="array[" separator="," close="]," item="item">
+            cast(#{item} as date)
+        </foreach>
+        <foreach collection="seatClassArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="seatTypeArr" open="array[" separator="," close="]," item="item">
+            #{item}
+        </foreach>
+        <foreach collection="preferArr" open="array[" separator="," close="]" item="item">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectTickets" resultType="com.dbpp.my12306.entity.Ticket">
+        select *
+        from tickets
+        where ticket_id in
+        <foreach collection="ticketIdArr" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="refund">
+        with q1 as (delete from order_seat
+            where ticket_id = #{ticketId})
+        update tickets
+        set status = 'R'
+        where ticket_id = #{ticketId}
+    </update>
+
 </mapper>

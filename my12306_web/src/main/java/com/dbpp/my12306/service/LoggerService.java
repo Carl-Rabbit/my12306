@@ -23,4 +23,9 @@ public class LoggerService {
 		logger.info(event + " " + responseSet);
 		loggerMapper.add(event, responseSet.toString());
 	}
+
+	public void info(Logger logger, String event, String retStr) {
+		logger.info(event + " " + retStr);
+		loggerMapper.add(event, retStr);
+	}
 }

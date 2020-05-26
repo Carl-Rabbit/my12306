@@ -1,0 +1,13 @@
+### success (admin):
+DELETE {{baseUrl}}/api/admin/route_sch/45981
+Authorization: admin:admin
+
+### success (admin): delete all
+DELETE {{baseUrl}}/api/admin/route_sch?train_code=T999
+Authorization: admin:admin
+
+### fail: no such time_detail
+DELETE {{baseUrl}}/api/admin/time_detail/-1
+Authorization: admin:admin
+
+###

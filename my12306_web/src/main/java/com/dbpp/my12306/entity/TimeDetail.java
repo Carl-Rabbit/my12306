@@ -1,7 +1,5 @@
 package com.dbpp.my12306.entity;
 
-import java.util.Date;
-
 public class TimeDetail {
     private Integer timeDetailId;
 
@@ -11,9 +9,9 @@ public class TimeDetail {
 
     private Integer stationIndex;
 
-    private Date arriveTime;
+    private String arriveTime;
 
-    private Date leaveTime;
+    private String leaveTime;
 
     private Object runtime;
 
@@ -51,19 +49,19 @@ public class TimeDetail {
         this.stationIndex = stationIndex;
     }
 
-    public Date getArriveTime() {
+    public String getArriveTime() {
         return arriveTime;
     }
 
-    public void setArriveTime(Date arriveTime) {
+    public void setArriveTime(String arriveTime) {
         this.arriveTime = arriveTime;
     }
 
-    public Date getLeaveTime() {
+    public String getLeaveTime() {
         return leaveTime;
     }
 
-    public void setLeaveTime(Date leaveTime) {
+    public void setLeaveTime(String leaveTime) {
         this.leaveTime = leaveTime;
     }
 

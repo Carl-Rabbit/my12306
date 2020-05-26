@@ -1,0 +1,41 @@
+### success
+POST {{baseUrl}}/api/admin/train
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "12000T999000",
+  "train_kind": "T"
+}
+
+### fail: already exits
+POST {{baseUrl}}/api/admin/train
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "58000D64170D",
+  "train_kind": "D"
+}
+
+### fail: train no len != 12
+POST {{baseUrl}}/api/admin/train
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "58000D64170Dx",
+  "train_kind": "D"
+}
+
+### fail: kind error
+POST {{baseUrl}}/api/admin/train
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_no": "12000T999000",
+  "train_kind": "X"
+}
+
+###

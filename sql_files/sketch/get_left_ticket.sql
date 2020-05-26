@@ -1,10 +1,10 @@
--- input route_code (r_code), start station code (s_st), target station code (t_st), depart date (d_date)
+-- input train_code (t_code), start station code (s_st), target station code (t_st), depart date (d_date)
 -- return left ticket for each seat type
 
 select s.seat_id -- get all seats on route of that day
 from seats as s
          join trains as t
-              on s.train_code = t.train_code
+              on s.train_no = t.train_no
          join route_schedule as rs
               on rs.train_id = t.train_id
                   and rs.date = d_date

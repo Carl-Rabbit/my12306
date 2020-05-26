@@ -1,0 +1,17 @@
+### success 1
+GET {{baseUrl}}/api/admin/train/58000D64170D
+Authorization: admin:admin
+
+### success 2
+GET {{baseUrl}}/api/admin/train/12000T999000
+Authorization: admin:admin
+
+### fail: not authenticated
+GET {{baseUrl}}/api/admin/train/58000D64170D
+Authorization: admin:adminXXX
+
+### fail: train no len != 12
+GET {{baseUrl}}/api/admin/train/58000D64170DXX
+Authorization: admin:admin
+
+###

@@ -1,0 +1,13 @@
+### success 1
+GET {{baseUrl}}/api/admin/route_sch/G407
+Authorization: admin:admin
+
+### success 2
+GET {{baseUrl}}/api/admin/route_sch/T999
+Authorization: admin:admin
+
+### fail
+GET {{baseUrl}}/api/admin/route_sch/X404
+Authorization: admin:admin
+
+###

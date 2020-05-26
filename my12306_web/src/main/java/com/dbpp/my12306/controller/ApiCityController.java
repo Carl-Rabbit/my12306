@@ -8,7 +8,6 @@ import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +57,7 @@ public class ApiCityController {
 
 	@RequestMapping(value = "/admin/city", method = RequestMethod.POST)
 	public ResponseSet<?> add(@RequestBody Map<String, String> m,
-	                               HttpServletRequest request) {
+	                          HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
 			return auth;
@@ -88,9 +87,10 @@ public class ApiCityController {
 				} else {
 					ret.setStatus(ResultCode.EXCEPTION);
 				}
-				ret.setDetail(e.getCause().getMessage().split("详细：")[1]);
-				TransactionAspectSupport.currentTransactionStatus()
-						.setRollbackOnly();
+				String msg = e.getCause().getMessage();
+				ret.setDetail((msg.contains("详细：")) ?
+						msg.split("详细：")[1] : msg);
+				e.printStackTrace();
 			}
 		}
 		loggerService.info(logger, "ApiCityController.add auth=" + auth.getData().getAdminName()
@@ -123,10 +123,38 @@ public class ApiCityController {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
-			TransactionAspectSupport.currentTransactionStatus()
-					.setRollbackOnly();
 		}
-		loggerService.info(logger, "ApiPassengerController.disable cityId=" + cityId +
+		loggerService.info(logger, "ApiCityController.delete cityId=" + cityId +
+				" auth=" + auth.getData().getAdminName(), ret);
+		return ret;
+	}
+
+	@RequestMapping(value = "/admin/city", method = RequestMethod.DELETE)
+	public ResponseSet<?> deleteByName(@RequestParam("name") String name,
+	                             HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+
+		ResponseSet<Integer> ret = new ResponseSet<>();
+		try {
+			int r = cityService.deleteByName(name);
+			if (r == 1) {
+				ret.setDetail("Delete completed.");
+				ret.setStatus(ResultCode.SUCCESS);
+			} else {
+				ret.setDetail("No such city.");
+				ret.setStatus(ResultCode.FAIL);
+			}
+			ret.setData(r);
+
+		} catch (Exception e) {
+			ret.setData(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getMessage());
+		}
+		loggerService.info(logger, "ApiCityController.delete name=" + name +
 				" auth=" + auth.getData().getAdminName(), ret);
 		return ret;
 	}
