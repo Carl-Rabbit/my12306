@@ -221,6 +221,14 @@ public class ApiBusinessController {
 					return false;
 				}
 			}
+
+			// check index
+			for (int i = 0; i < len; i++) {
+				if (fromIndexArr[i] >= toIndexArr[i]) {
+					msg = "From index must be smaller than to index.";
+					return false;
+				}
+			}
 			return true;
 		}
 

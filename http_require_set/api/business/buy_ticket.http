@@ -1,4 +1,4 @@
-### success
+### success (first one is sold out)
 POST {{baseUrl}}/api/routes
 Authorization: CarlRabbit:123456
 Content-Type: application/json
@@ -16,7 +16,7 @@ Content-Type: application/json
   },
   {
     "psgId": 2,
-    "trainCode": "G2924",
+    "trainCode": "G2925",
     "fromIndex": 1,
     "toIndex": 4,
     "date": "2020-05-29",
@@ -58,6 +58,23 @@ Content-Type: application/json
     "seatCls": "A",
     "seatType": "Z",
     "prefer": "F"
+  }
+]
+
+### fail: index invalid
+POST {{baseUrl}}/api/routes
+Authorization: TestUser0:123456
+Content-Type: application/json
+
+[
+  {
+    "psgId": 76,
+    "trainCode": "G410",
+    "fromIndex": 2,
+    "toIndex": 3,
+    "date": "2020-05-29",
+    "seatCls": "B",
+    "seatType": "Z"
   }
 ]
 

@@ -8,7 +8,6 @@ import com.dbpp.my12306.mapper.BusinessMapper;
 import com.dbpp.my12306.mapper.OrderMapper;
 import com.dbpp.my12306.mapper.TicketMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class BusinessService {
 		return businessMapper.listRouteDetails(trainCode);
 	}
 
-	@Transactional
 	public Object[] buyTickets(Integer userId,
 	                               Integer[] psgIdArr,
 	                               String[] trainCodeArr,

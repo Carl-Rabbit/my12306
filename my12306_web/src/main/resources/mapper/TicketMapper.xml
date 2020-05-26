@@ -143,13 +143,13 @@
             cast(#{item} as date)
         </foreach>
         <foreach collection="seatClassArr" open="array[" separator="," close="]," item="item">
-            #{item}
+            #{item, jdbcType=CHAR}
         </foreach>
         <foreach collection="seatTypeArr" open="array[" separator="," close="]," item="item">
-            #{item}
+            #{item, jdbcType=CHAR}
         </foreach>
         <foreach collection="preferArr" open="array[" separator="," close="]" item="item">
-            #{item}
+            #{item, jdbcType=CHAR}
         </foreach>
         )
     </select>
