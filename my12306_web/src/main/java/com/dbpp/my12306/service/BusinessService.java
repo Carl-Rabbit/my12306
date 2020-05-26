@@ -1,12 +1,14 @@
 package com.dbpp.my12306.service;
 
 import com.dbpp.my12306.entity.Order;
+import com.dbpp.my12306.entity.RouteDetailInfo;
 import com.dbpp.my12306.entity.RouteInfo;
 import com.dbpp.my12306.entity.Ticket;
 import com.dbpp.my12306.mapper.BusinessMapper;
 import com.dbpp.my12306.mapper.OrderMapper;
 import com.dbpp.my12306.mapper.TicketMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +29,11 @@ public class BusinessService {
 		return businessMapper.listRoutes(fromStr, toStr, departDate);
 	}
 
+	public List<RouteDetailInfo> listRouteDetails(String trainCode) {
+		return businessMapper.listRouteDetails(trainCode);
+	}
+
+	@Transactional
 	public Object[] buyTickets(Integer userId,
 	                               Integer[] psgIdArr,
 	                               String[] trainCodeArr,
@@ -39,6 +46,7 @@ public class BusinessService {
 
 		List<Integer> idArr = ticketMapper.buyTickets(userId, psgIdArr, trainCodeArr, fromIndexArr,
 				toIndexArr, departDateArr, seatClassArr, seatTypeArr, preferArr);
+//		if (true) {throw new ArithmeticException("Throw exception on purpose.");}
 		List<Ticket> ticketArr = ticketMapper.selectTickets(idArr.toArray(new Integer[0]));
 		Order order = (ticketArr.size() == 0) ?
 				null : orderMapper.selectByPrimaryKey(ticketArr.get(0).getOrderId());

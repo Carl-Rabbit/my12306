@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dbpp.my12306.mapper.BusinessMapper" >
+<mapper namespace="com.dbpp.my12306.mapper.BusinessMapper">
 
-  <select id="listRoutes" resultType="com.dbpp.my12306.entity.RouteInfo">
-    select *
-    from list_routes(#{fromStr}, #{toStr}, #{departDate}::date)
-  </select>
+    <select id="listRoutes" resultType="com.dbpp.my12306.entity.RouteInfo">
+        select *
+        from list_routes(#{fromStr}, #{toStr}, #{departDate}::date)
+    </select>
+
+    <select id="listRouteDetails" resultType="com.dbpp.my12306.entity.RouteDetailInfo">
+        with q as (select station_index,
+                          s.station_name,
+                          arrive_time,
+                          leave_time,
+                          date_part('min', leave_time - arrive_time) as stay_time
+                   from time_details as td
+                            join stations as s on td.station_id = s.station_id
+                   where train_code = #{trainCode}
+                   order by station_index)
+        select station_index,
+               station_name,
+               arrive_time,
+               leave_time,
+               case
+                   when stay_time = 0 then '---'
+                   when stay_time &lt; 0 then (stay_time + 60) || ' min'
+                   else stay_time || ' min'
+                   end as stay_time
+        from q;
+    </select>
 </mapper>

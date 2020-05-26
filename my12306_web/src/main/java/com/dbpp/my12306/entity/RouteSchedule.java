@@ -1,7 +1,5 @@
 package com.dbpp.my12306.entity;
 
-import java.util.Date;
-
 public class RouteSchedule {
     private Long routeId;
 
@@ -9,7 +7,7 @@ public class RouteSchedule {
 
     private String trainNo;
 
-    private Date departDate;
+    private String departDate;
 
     private String status;
 
@@ -37,11 +35,11 @@ public class RouteSchedule {
         this.trainNo = trainNo == null ? null : trainNo.trim();
     }
 
-    public Date getDepartDate() {
+    public String getDepartDate() {
         return departDate;
     }
 
-    public void setDepartDate(Date departDate) {
+    public void setDepartDate(String departDate) {
         this.departDate = departDate;
     }
 

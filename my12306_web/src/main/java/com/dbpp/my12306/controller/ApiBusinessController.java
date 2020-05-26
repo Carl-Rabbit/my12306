@@ -1,9 +1,6 @@
 package com.dbpp.my12306.controller;
 
-import com.dbpp.my12306.entity.BuyQuery;
-import com.dbpp.my12306.entity.Order;
-import com.dbpp.my12306.entity.RouteInfo;
-import com.dbpp.my12306.entity.Ticket;
+import com.dbpp.my12306.entity.*;
 import com.dbpp.my12306.service.AuthService;
 import com.dbpp.my12306.service.BusinessService;
 import com.dbpp.my12306.service.LoggerService;
@@ -66,8 +63,28 @@ public class ApiBusinessController {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getCause().getMessage());
 		}
-		loggerService.info(logger, "ApiBusinessController.listRoutes fromStr=" + fromStr
-				+ " toStr=" + toStr + " date=" + date, ret.getStatus() + ret.getDetail());
+		loggerService.info(logger, "ApiBusinessController.listRoutes trainCode=" + fromStr
+				+ " toStr=" + toStr + " date=" + date, ret.getStatus() + " " + ret.getDetail());
+		return ret;
+	}
+
+	@RequestMapping(value = {"/routes/detail/{train_code}", "/time_details/{train_code}"},
+			method = RequestMethod.GET)
+	public ResponseSet<?> listRouteDetails(@PathVariable(name = "train_code") String trainCode) {
+
+		var ret = new ResponseSet<>();
+		try {
+			List<RouteDetailInfo> data = businessService.listRouteDetails(trainCode);
+			ret.setDetail(data.size() + " detail(s) fetched.");
+			ret.setData(data);
+			ret.setStatus(ResultCode.SUCCESS);
+		} catch (Exception e) {
+			ret.setData(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getCause().getMessage());
+		}
+		loggerService.info(logger, "ApiBusinessController.listRoutes trainCode="
+						+ trainCode, ret.getStatus() + " " + ret.getDetail());
 		return ret;
 	}
 
@@ -100,6 +117,12 @@ public class ApiBusinessController {
 					break;
 				}
 
+				if (!ps.checkPsgBelong(userId)) {
+					ret.setDetail(ps.msg);
+					ret.setStatus(ResultCode.PARAMS_ERROR);
+					break;
+				}
+
 				Object[] data = businessService.buyTickets(userId,
 						ps.psgIdArr,
 						ps.trainCodeArr,
@@ -126,7 +149,11 @@ public class ApiBusinessController {
 		} catch (Exception e) {
 			ret.setData(null);
 			ret.setStatus(ResultCode.EXCEPTION);
-			ret.setDetail(e.getCause().getMessage());
+			if (e.getCause() != null) {
+				ret.setDetail(e.getCause().getMessage());
+			} else {
+				ret.setDetail(e.getMessage());
+			}
 		}
 		loggerService.info(logger, "ApiBusinessController.listRoutes list=" + list
 				+ " auth=" + auth.getData().getUserName(), ret.getStatus() + " " + ret.getDetail());
@@ -191,6 +218,25 @@ public class ApiBusinessController {
 			for (String s : seatTypeArr) {
 				if (!"W".equals(s) && !"Z".equals(s)) {
 					msg = "Param seatCls must be W or Z.";
+					return false;
+				}
+			}
+			return true;
+		}
+
+		boolean checkPsgBelong(Integer userId) {
+			for (Integer id : psgIdArr) {
+				Passenger psg = passengerService.getById(id, true).getData();
+				if (psg == null) {
+					msg = "No such passenger where psg_id=" + id;
+					return false;
+				}
+				if (psg.getUserId() != userId) {
+					msg = "The user has no privilege to visit this passenger.";
+					return false;
+				}
+				if (!"Y".equals(psg.getAvailable())) {
+					msg = "This passenger is not valid.";
 					return false;
 				}
 			}

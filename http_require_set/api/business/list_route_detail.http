@@ -1,0 +1,10 @@
+# user view of time details
+# for admin view, see time_detail/get_info.http
+
+### success 1
+GET {{baseUrl}}/api/routes/detail/G407
+
+### success 2
+GET {{baseUrl}}/api/routes/detail/T999
+
+###

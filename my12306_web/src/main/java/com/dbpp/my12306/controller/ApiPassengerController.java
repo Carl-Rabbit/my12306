@@ -114,8 +114,8 @@ public class ApiPassengerController {
 	 * @return List of passenger
 	 */
 	@RequestMapping(value = "/admin/psgs", method = RequestMethod.GET)
-	public ResponseSet<?> getInfoAdmin(@RequestParam(required = false) Integer id,
-	                                   @RequestParam(required = false) String name,
+	public ResponseSet<?> getInfoAdmin(@RequestParam(name = "user_id", required = false) Integer id,
+	                                   @RequestParam(name = "username", required = false) String name,
 	                                   HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {

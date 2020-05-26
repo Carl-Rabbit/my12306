@@ -19,12 +19,9 @@
     delete from trains
     where train_no = #{trainNo,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="com.dbpp.my12306.entity.Train" >
-    <selectKey resultType="java.lang.String" keyProperty="trainNo" order="AFTER" >
-      Postgres
-    </selectKey>
-    insert into trains (train_kind, status)
-    values (#{trainKind,jdbcType=CHAR}, #{status,jdbcType=CHAR})
+  <insert id="insert" parameterType="com.dbpp.my12306.entity.Train">
+    insert into trains (train_no, train_kind)
+    values (#{trainNo, jdbcType=CHAR}, #{trainKind,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Train" >
     <selectKey resultType="java.lang.String" keyProperty="trainNo" order="AFTER" >

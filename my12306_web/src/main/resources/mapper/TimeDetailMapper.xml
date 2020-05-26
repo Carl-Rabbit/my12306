@@ -25,21 +25,17 @@
     delete from time_details
     where time_detail_id = #{timeDetailId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dbpp.my12306.entity.TimeDetail">
-    <selectKey keyProperty="timeDetailId" order="AFTER" resultType="java.lang.Integer">
-      Postgres
-    </selectKey>
+  <insert id="insert" parameterType="com.dbpp.my12306.entity.TimeDetail"
+          useGeneratedKeys="true" keyProperty="timeDetailId" keyColumn="time_detail_id">
     insert into time_details (train_code, station_id, station_index, 
       arrive_time, leave_time, runtime, 
       mileage)
     values (#{trainCode,jdbcType=VARCHAR}, #{stationId,jdbcType=INTEGER}, #{stationIndex,jdbcType=INTEGER}, 
-      #{arriveTime,jdbcType=TIME}, #{leaveTime,jdbcType=TIME}, #{runtime,jdbcType=OTHER}, 
+      #{arriveTime,jdbcType=VARCHAR}::time, #{leaveTime,jdbcType=VARCHAR}::time, #{runtime,jdbcType=OTHER}::interval,
       #{mileage,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.TimeDetail">
-    <selectKey keyProperty="timeDetailId" order="AFTER" resultType="java.lang.Integer">
-      Postgres
-    </selectKey>
+  <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.TimeDetail"
+          useGeneratedKeys="true" keyProperty="timeDetailId" keyColumn="time_detail_id">
     insert into time_details
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="trainCode != null">
@@ -101,13 +97,13 @@
         station_index = #{stationIndex,jdbcType=INTEGER},
       </if>
       <if test="arriveTime != null">
-        arrive_time = #{arriveTime,jdbcType=TIME},
+        arrive_time = #{arriveTime,jdbcType=TIME}::time,
       </if>
       <if test="leaveTime != null">
-        leave_time = #{leaveTime,jdbcType=TIME},
+        leave_time = #{leaveTime,jdbcType=TIME}::time,
       </if>
       <if test="runtime != null">
-        runtime = #{runtime,jdbcType=OTHER},
+        runtime = #{runtime,jdbcType=OTHER}::interval,
       </if>
       <if test="mileage != null">
         mileage = #{mileage,jdbcType=INTEGER},
@@ -126,4 +122,23 @@
       mileage = #{mileage,jdbcType=INTEGER}
     where time_detail_id = #{timeDetailId,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByTrainCode">
+    delete from time_details
+    where train_code = #{trainCode,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectByTrainCode" resultType="com.dbpp.my12306.entity.TimeDetail">
+    select *
+    from time_details
+    where train_code = #{trainCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="deleteByIndexes" resultType="java.lang.Integer">
+    select del_time_details(#{trainCode},
+    <foreach collection="indexes" open="array[" separator="," close="])" item="item">
+      #{item}
+    </foreach>
+  </select>
+
 </mapper>

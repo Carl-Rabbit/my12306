@@ -1,0 +1,20 @@
+### success 1
+PUT {{baseUrl}}/api/admin/time_detail
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "time_detail_id": 93578,
+  "station_index": 3
+}
+
+### fail: miss param time_detail_id
+PUT {{baseUrl}}/api/admin/time_detail
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "station_index": 3
+}
+
+###

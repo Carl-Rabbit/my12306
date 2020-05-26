@@ -1,0 +1,13 @@
+### success (admin)
+DELETE {{baseUrl}}/api/admin/station/372
+Authorization: admin:admin
+
+### success (admin)
+DELETE {{baseUrl}}/api/admin/city?name=八原
+Authorization: admin:admin
+
+### fail: no such city
+DELETE {{baseUrl}}/api/admin/city/-1
+Authorization: admin:admin
+
+###

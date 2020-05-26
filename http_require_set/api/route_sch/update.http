@@ -1,0 +1,29 @@
+### success 1
+PUT {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "route_sch_id": 45986,
+  "status": "N"
+}
+
+### fail: miss param route_sch_id
+PUT {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "status": "N"
+}
+
+### fail 2: nothing to update
+PUT {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "route_sch_id": 45986
+}
+
+###

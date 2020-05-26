@@ -1,0 +1,31 @@
+### success
+POST {{baseUrl}}/api/admin/time_detail
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_code": "T999",
+  "station_id": 5166,
+  "station_index": 1,
+  "arrive_time": "00:00:00",
+  "leave_time": "00:00:00",
+  "runtime": "00:10:00",
+  "mileage": 15
+}
+
+### fail: time format is not valid
+POST {{baseUrl}}/api/admin/time_detail
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_code": "T999",
+  "station_id": 5166,
+  "station_index": 1,
+  "arrive_time": "00:aa-00",
+  "leave_time": "00:00:00",
+  "runtime": "00:10:00",
+  "mileage": 15
+}
+
+###

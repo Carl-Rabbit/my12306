@@ -1,9 +1,9 @@
 package com.dbpp.my12306.controller;
 
-import com.dbpp.my12306.entity.City;
+import com.dbpp.my12306.entity.Station;
 import com.dbpp.my12306.service.AuthService;
-import com.dbpp.my12306.service.CityService;
 import com.dbpp.my12306.service.LoggerService;
+import com.dbpp.my12306.service.StationService;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -16,30 +16,30 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class ApiCityController {
+public class ApiStationController {
 	private final AuthService authService;
-	private final CityService cityService;
+	private final StationService stationService;
 	private final LoggerService loggerService;
 
 	private Logger logger = LogManager.getLogger(this.getClass().getName());
 
-	public ApiCityController(AuthService authService, CityService cityService, LoggerService loggerService) {
+	public ApiStationController(AuthService authService, StationService stationService, LoggerService loggerService) {
 		this.authService = authService;
-		this.cityService = cityService;
+		this.stationService = stationService;
 		this.loggerService = loggerService;
 	}
 
 
-	@RequestMapping(value = "/city", method = RequestMethod.GET)
-	public ResponseSet<?> getInfo(@RequestParam(name = "id", required = false) Integer cityId,
-	                              @RequestParam(name = "name", required = false) String cityName,
-	                              @RequestParam(required = false) String province) {
+	@RequestMapping(value = "/station", method = RequestMethod.GET)
+	public ResponseSet<?> getInfo(@RequestParam(name = "id", required = false) Integer stationId,
+	                              @RequestParam(name = "name", required = false) String stationName,
+	                              @RequestParam(name = "city_name", required = false) String cityName) {
 
-		var ret = new ResponseSet<List<City>>();
+		var ret = new ResponseSet<List<Station>>();
 		try {
-			List<City> data = cityService.get(cityId, cityName, province);
+			List<Station> data = stationService.get(stationId, stationName, cityName);
 			if (data.isEmpty()) {
-				ret = new ResponseSet<>(ResultCode.NO_RESULT, "No such city", null);
+				ret = new ResponseSet<>(ResultCode.NO_RESULT, "No such station", null);
 			} else {
 				ret.setData(data);
 				ret.setStatus(ResultCode.SUCCESS);
@@ -49,13 +49,13 @@ public class ApiCityController {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		loggerService.info(logger, "ApiCityController.getInfo cityId=" + cityId
-				+ " cityName=" + cityName + " province=" + province, ret);
+		loggerService.info(logger, "ApiStationController.getInfo stationId=" + stationId
+				+ " stationName=" + stationName, ret.getStatus() + " " + ret.getDetail());
 		return ret;
 	}
 
 
-	@RequestMapping(value = "/admin/city", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/station", method = RequestMethod.POST)
 	public ResponseSet<?> add(@RequestBody Map<String, String> m,
 	                          HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
@@ -63,21 +63,25 @@ public class ApiCityController {
 			return auth;
 		}
 
-		City city = new City();
+		Station station = new Station();
 		ResponseSet<Integer> ret;
-		String name = m.get("city_name");
-		String province = m.get("province");
-		if (name == null || province == null) {
+		String name = m.get("station_name");
+		String stationCode = m.get("station_code");
+		int cityId = Integer.parseInt(m.getOrDefault("city_id", "-1"));
+		if (name == null || cityId == -1) {
 			ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Missing some required param.", null);
+		} else if (stationCode != null && stationCode.length() != 3) {
+			ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Param station_code must be 3 upper letters.", null);
 		} else {
 			ret = new ResponseSet<>();
 
-			city.setName(name);
-			city.setProvince(province);
+			station.setStationName(name);
+			station.setStationCode(stationCode);
+			station.setCityId(cityId);
 			try {
-				cityService.add(city);
+				stationService.add(station);
 				ret.setStatus(ResultCode.CREATED);
-				ret.setData(city.getCityId());
+				ret.setData(station.getStationId());
 			} catch (Exception e) {
 				ret.setDetail(null);
 				if (e.getCause().getMessage().contains("duplicate key")) {
@@ -93,14 +97,14 @@ public class ApiCityController {
 				e.printStackTrace();
 			}
 		}
-		loggerService.info(logger, "ApiCityController.add auth=" + auth.getData().getAdminName()
-				+ " city=" + city, ret);
+		loggerService.info(logger, "ApiStationController.add auth=" + auth.getData().getAdminName()
+				+ " station=" + station, ret);
 		return ret;
 	}
 
 
-	@RequestMapping(value = "/admin/city/{city_id}", method = RequestMethod.DELETE)
-	public ResponseSet<?> delete(@PathVariable("city_id") Integer cityId,
+	@RequestMapping(value = "/admin/station/{station_id}", method = RequestMethod.DELETE)
+	public ResponseSet<?> delete(@PathVariable("station_id") Integer stationId,
 	                             HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
@@ -109,12 +113,12 @@ public class ApiCityController {
 
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			int r = cityService.delete(cityId);
+			int r = stationService.delete(stationId);
 			if (r == 1) {
 				ret.setDetail("Delete completed.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
-				ret.setDetail("No such city.");
+				ret.setDetail("No such station.");
 				ret.setStatus(ResultCode.FAIL);
 			}
 			ret.setData(r);
@@ -124,14 +128,14 @@ public class ApiCityController {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		loggerService.info(logger, "ApiCityController.delete cityId=" + cityId +
+		loggerService.info(logger, "ApiStationController.delete stationId=" + stationId +
 				" auth=" + auth.getData().getAdminName(), ret);
 		return ret;
 	}
 
-	@RequestMapping(value = "/admin/city", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/admin/station", method = RequestMethod.DELETE)
 	public ResponseSet<?> deleteByName(@RequestParam("name") String name,
-	                             HttpServletRequest request) {
+	                                   HttpServletRequest request) {
 		var auth = authService.checkAdmin(request);
 		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
 			return auth;
@@ -139,12 +143,12 @@ public class ApiCityController {
 
 		ResponseSet<Integer> ret = new ResponseSet<>();
 		try {
-			int r = cityService.deleteByName(name);
+			int r = stationService.deleteByName(name);
 			if (r == 1) {
 				ret.setDetail("Delete completed.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
-				ret.setDetail("No such city.");
+				ret.setDetail("No such station.");
 				ret.setStatus(ResultCode.FAIL);
 			}
 			ret.setData(r);
@@ -154,7 +158,7 @@ public class ApiCityController {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getMessage());
 		}
-		loggerService.info(logger, "ApiCityController.delete name=" + name +
+		loggerService.info(logger, "ApiStationController.delete name=" + name +
 				" auth=" + auth.getData().getAdminName(), ret);
 		return ret;
 	}

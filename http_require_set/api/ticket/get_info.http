@@ -3,7 +3,7 @@ GET {{baseUrl}}/api/ticket/1
 Authorization: CarlRabbit:123456
 
 ### success 2
-GET {{baseUrl}}/api/ticket/34
+GET {{baseUrl}}/api/ticket/2
 Authorization: CarlRabbit:123456
 
 ### success 3 (admin)

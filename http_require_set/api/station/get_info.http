@@ -1,0 +1,13 @@
+### success 1
+GET {{baseUrl}}/api/station?id=1
+
+### success 2
+GET {{baseUrl}}/api/station?name=深圳
+
+### success 3
+GET {{baseUrl}}/api/station?city_name=八原
+
+### success 4: Warning (very long)
+GET {{baseUrl}}/api/station
+
+###

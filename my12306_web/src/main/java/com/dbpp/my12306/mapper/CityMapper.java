@@ -20,4 +20,6 @@ public interface CityMapper {
     int updateByPrimaryKey(City record);
 
     List<City> select(Integer cityId, String cityName, String province);
+
+    int deleteByName(String name);
 }
