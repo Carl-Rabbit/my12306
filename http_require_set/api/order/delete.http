@@ -1,0 +1,9 @@
+### success (admin)
+DELETE {{baseUrl}}/api/admin/order/7651
+Authorization: admin:admin
+
+### fail: no such order
+DELETE {{baseUrl}}/api/admin/order/-1
+Authorization: admin:admin
+
+###

@@ -1,10 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello world</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My12306</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-<p>This is the demo index page of my web application.</p>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/">My12306</a>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li><a href="/api/help">API参考表目</a></li>
+                            <li><a href="#">数据库设计</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+			<br>
+			<br>
+			<br>
+			<br>
+            <div class="jumbotron">
+                <h2>
+                    这是一个仅做练习使用的火车票售卖/管理系统
+                </h2>
+
+                <div>
+                    纯API项目
+					<br>
+					你可以调用API：<br>
+					&emsp;&emsp;1. 查询火车票信息<br>
+					&emsp;&emsp;2. 注册一个用户，进行购买、退票<br>
+					&emsp;&emsp;3. 通过管理员账户，管理线路，<del>删掉所有数据然后跑路</del><br>
+                </div>
+				<br>
+
+				<div>
+					API的调用示例已经写好啦，你可以在Github中的http_require_set文件夹下找到。
+				</div>
+
+
+                <div>
+                    Github地址：<a href="https://github.com/Carl-Rabbit/my12306">戳这里</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-center">
+	<br>
+	<p>粤ICP备 <a href="http://beian.miit.gov.cn/">20040764</a></p>
+</footer>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

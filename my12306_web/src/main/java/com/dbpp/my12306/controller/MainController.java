@@ -6,7 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-	@RequestMapping(value = "api/help")
+	@RequestMapping(value = "/")
+	public String index() {
+		return "redirect:index.html";
+	}
+
+	@RequestMapping(value = "/api/help")
 	public String help() {
 		return "api_help";
 	}

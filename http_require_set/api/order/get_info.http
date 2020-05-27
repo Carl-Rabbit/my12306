@@ -1,0 +1,13 @@
+### success 1
+GET {{baseUrl}}/api/order/1
+Authorization: CarlRabbit:123456
+
+### success 2 (admin)
+GET {{baseUrl}}/api/admin/order/1
+Authorization: admin:admin
+
+### fail: other user's order
+GET {{baseUrl}}/api/order/2
+Authorization: CarlRabbit:123456
+
+###

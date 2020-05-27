@@ -33,4 +33,6 @@ public interface TicketMapper {
 	List<Ticket> selectTickets(@Param("ticketIdArr")Integer[] ticketIdArr);
 
 	int refund(Integer ticketId);
+
+	List<Ticket> selectByOrderId(Integer orderId);
 }

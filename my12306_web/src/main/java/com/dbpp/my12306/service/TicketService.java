@@ -4,6 +4,8 @@ import com.dbpp.my12306.entity.Ticket;
 import com.dbpp.my12306.mapper.TicketMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TicketService {
 	private final TicketMapper ticketMapper;
@@ -22,5 +24,9 @@ public class TicketService {
 
 	public Integer refund(Integer ticketId) {
 		return ticketMapper.refund(ticketId);
+	}
+
+	public List<Ticket> getAllOf(Integer orderId) {
+		return ticketMapper.selectByOrderId(orderId);
 	}
 }

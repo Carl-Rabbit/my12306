@@ -171,4 +171,10 @@
         where ticket_id = #{ticketId}
     </update>
 
+    <select id="selectByOrderId" resultType="com.dbpp.my12306.entity.Ticket">
+        select *
+        from tickets
+        where order_id = #{orderId};
+    </select>
+
 </mapper>

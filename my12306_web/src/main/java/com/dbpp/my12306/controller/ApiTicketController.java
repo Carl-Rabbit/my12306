@@ -176,7 +176,7 @@ public class ApiTicketController {
 			ret.setStatus(ResultCode.EXCEPTION);
 			ret.setDetail(e.getCause().getMessage());
 		}
-		loggerService.info(logger, "ApiPassengerController.disable ticketId=" + ticketId +
+		loggerService.info(logger, "ApiTicketController.delete ticketId=" + ticketId +
 				" auth=" + auth.getData().getAdminName(), ret);
 		return ret;
 	}
