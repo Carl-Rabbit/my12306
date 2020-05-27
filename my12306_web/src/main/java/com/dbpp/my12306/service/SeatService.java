@@ -34,4 +34,8 @@ public class SeatService {
 	public Integer deleteAllOf(String trainNo) {
 		return seatMapper.deleteByTrainNo(trainNo);
 	}
+
+	public Integer generateSeat(String trainNo, String trainCode) {
+		return seatMapper.generateSeat(trainNo, trainCode);
+	}
 }

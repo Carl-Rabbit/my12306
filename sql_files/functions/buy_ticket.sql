@@ -145,23 +145,23 @@ begin
 
                             -- update tickets
 
---                             prices := cal_prices(substr(tr_code[i], 1, 1),
---                                                  mile);
+                            prices := cal_prices(substr(tr_code[i], 1, 1),
+                                                 mile);
 
                             update tickets
                             set seat_info    = seat_rc,
                                 entrance     = '01' || case
                                                            when seat_rc.carriage <= 8 then 'A'
                                                            else 'B' end,
---                                 ticket_price = case
---                                                    when seat_rc.class = 'A' and seat_rc.type = 'W' then prices[1]
---                                                    when seat_rc.class = 'A' and seat_rc.type = 'Z' then prices[2]
---                                                    when seat_rc.class = 'B' and seat_rc.type = 'W' then prices[3]
---                                                    when seat_rc.class = 'B' and seat_rc.type = 'Z' then prices[4]
---                                                    when seat_rc.class = 'C' and seat_rc.type = 'W' then prices[5]
---                                                    when seat_rc.class = 'C' and seat_rc.type = 'Z' then prices[6]
---                                     end
-                                ticket_price = 1
+                                ticket_price = case
+                                                   when seat_rc.class = 'A' and seat_rc.type = 'W' then prices[1]
+                                                   when seat_rc.class = 'A' and seat_rc.type = 'Z' then prices[2]
+                                                   when seat_rc.class = 'B' and seat_rc.type = 'W' then prices[3]
+                                                   when seat_rc.class = 'B' and seat_rc.type = 'Z' then prices[4]
+                                                   when seat_rc.class = 'C' and seat_rc.type = 'W' then prices[5]
+                                                   when seat_rc.class = 'C' and seat_rc.type = 'Z' then prices[6]
+                                    end
+--                                 ticket_price = 1
                             where ticket_id = ticket_id_;
 
                             r_ticket_id := ticket_id_;

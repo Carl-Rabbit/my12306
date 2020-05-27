@@ -1,7 +1,9 @@
 package com.dbpp.my12306.mapper;
 
 import com.dbpp.my12306.entity.Admin;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AdminMapper {
     int deleteByPrimaryKey(Integer adminId);
 
@@ -14,4 +16,6 @@ public interface AdminMapper {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+
+    Admin select(Integer adminId, String adminName);
 }

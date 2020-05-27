@@ -21,19 +21,12 @@
     delete from admins
     where admin_id = #{adminId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dbpp.my12306.entity.Admin" >
-    <selectKey resultType="java.lang.Integer" keyProperty="adminId" order="AFTER" >
-      Postgres
-    </selectKey>
-    insert into admins (admin_name, password, kind, 
-      available)
-    values (#{adminName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{kind,jdbcType=CHAR}, 
-      #{available,jdbcType=CHAR})
+  <insert id="insert" parameterType="com.dbpp.my12306.entity.Admin"
+          useGeneratedKeys="true" keyProperty="adminId" keyColumn="admin_id">
+    insert into admins (admin_name, password, kind)
+    values (#{adminName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{kind,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dbpp.my12306.entity.Admin" >
-    <selectKey resultType="java.lang.Integer" keyProperty="adminId" order="AFTER" >
-      Postgres
-    </selectKey>
     insert into admins
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="adminName != null" >
@@ -90,4 +83,12 @@
       available = #{available,jdbcType=CHAR}
     where admin_id = #{adminId,jdbcType=INTEGER}
   </update>
+
+    <select id="select" resultType="com.dbpp.my12306.entity.Admin">
+      select * from admins
+      <where>
+        <if test="adminId != null">admin_id = #{adminId}</if>
+        <if test="adminName != null">and admin_name = #{adminName}</if>
+      </where>
+    </select>
 </mapper>

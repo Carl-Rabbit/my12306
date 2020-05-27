@@ -120,4 +120,8 @@
         from seats
         where train_no = #{train_no}
     </delete>
+
+    <select id="generateSeat" resultType="Integer">
+        select generate_seat(#{trainNo, jdbcType=VARCHAR}, #{trainKind, jdbcType=CHAR});
+    </select>
 </mapper>

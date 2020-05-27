@@ -4,5 +4,3 @@ from route_sc_template;
 
 select * from route_schedule
 where depart_date = '2020-05-31'::date
-
-

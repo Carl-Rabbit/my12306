@@ -22,4 +22,6 @@ public interface SeatMapper {
     List<Seat> selectByTrainNo(String trainNo);
 
     int deleteByTrainNo(String trainNo);
+
+    int generateSeat(String trainNo, String trainKind);
 }

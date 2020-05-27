@@ -1,0 +1,17 @@
+### success 1
+GET {{baseUrl}}/api/admin
+Authorization: admin:admin
+
+### success 2
+GET {{baseUrl}}/api/admin?id=1
+Authorization: admin:admin
+
+### success 3
+GET {{baseUrl}}/api/admin?name=admin
+Authorization: admin:admin
+
+### fail: not authenticated
+GET {{baseUrl}}/api/admin?name=admin
+Authorization: admin:adminXXX
+
+###

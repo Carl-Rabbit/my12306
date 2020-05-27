@@ -1,0 +1,13 @@
+### success 1
+POST {{baseUrl}}/api/admin/seat/12000T999000
+Authorization: admin:admin
+
+### fail: not authenticated
+POST {{baseUrl}}/api/admin/seat/58000D64170D
+Authorization: admin:adminXXX
+
+### fail: train no len != 12
+POST {{baseUrl}}/api/admin/seat/58000D64170DXX
+Authorization: admin:admin
+
+###

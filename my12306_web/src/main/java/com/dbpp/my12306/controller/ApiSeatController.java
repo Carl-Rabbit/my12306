@@ -1,9 +1,11 @@
 package com.dbpp.my12306.controller;
 
 import com.dbpp.my12306.entity.Seat;
+import com.dbpp.my12306.entity.Train;
 import com.dbpp.my12306.service.AuthService;
 import com.dbpp.my12306.service.LoggerService;
 import com.dbpp.my12306.service.SeatService;
+import com.dbpp.my12306.service.TrainService;
 import com.dbpp.my12306.utils.ResponseSet;
 import com.dbpp.my12306.utils.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -19,14 +21,16 @@ import java.util.Map;
 public class ApiSeatController {
 	private final AuthService authService;
 	private final SeatService seatService;
+	private final TrainService trainService;
 	private final LoggerService loggerService;
 
 	private Logger logger = LogManager.getLogger(this.getClass().getName());
 
 	public ApiSeatController(AuthService authService, SeatService seatService,
-	                         LoggerService loggerService) {
+	                         TrainService trainService, LoggerService loggerService) {
 		this.authService = authService;
 		this.seatService = seatService;
+		this.trainService = trainService;
 		this.loggerService = loggerService;
 	}
 
@@ -57,6 +61,48 @@ public class ApiSeatController {
 			ret.setDetail(e.getMessage());
 		}
 		loggerService.info(logger, "ApiSeatController.getInfoAdmin seatId=" + trainNo
+				+ " auth=" + auth.getData().getAdminName(), ret.getStatus() + " " + ret.getDetail());
+		return ret;
+	}
+
+	@RequestMapping(value = "/admin/seat/{train_no}", method = RequestMethod.POST)
+	public ResponseSet<?> generateSeat(@PathVariable(name = "train_no") String trainNo,
+	                                   HttpServletRequest request) {
+		var auth = authService.checkAdmin(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+
+		var ret = new ResponseSet<Integer>();
+		try {
+			while (true) {
+				if (trainNo.length() != 12) {
+					ret = new ResponseSet<>(ResultCode.PARAMS_ERROR, "Param train_code's length must be 12.", null);
+					break;
+				}
+				Train train = trainService.get(trainNo);
+				if (train == null) {
+					ret.setDetail("No such train.");
+					ret.setStatus(ResultCode.PARAMS_ERROR);
+					break;
+				}
+				Integer data = seatService.generateSeat(trainNo, train.getTrainKind());
+				if (data == 0) {
+					ret = new ResponseSet<>(ResultCode.FAIL, "No seat inserted.", null);
+				} else {
+					ret.setDetail("Generate " + data + " seat(s) by default to the train");
+					ret.setData(data);
+					ret.setStatus(ResultCode.SUCCESS);
+				}
+				break;
+			}
+
+		} catch (Exception e) {
+			ret.setData(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getMessage());
+		}
+		loggerService.info(logger, "ApiSeatController.generateSeat seatId=" + trainNo
 				+ " auth=" + auth.getData().getAdminName(), ret.getStatus() + " " + ret.getDetail());
 		return ret;
 	}

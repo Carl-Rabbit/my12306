@@ -1,0 +1,35 @@
+### success
+POST {{baseUrl}}/api/admin
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "admin_name": "admin0",
+  "password": "admin0",
+  "kind": "A"
+}
+
+### fail: already exits
+POST {{baseUrl}}/api/admin
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "admin_name": "admin",
+  "password": "123456",
+  "kind": "A"
+}
+
+
+### fail: missing param
+POST {{baseUrl}}/api/admin
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "admin_name": "admin0",
+  "password": "admin0"
+}
+
+
+###
