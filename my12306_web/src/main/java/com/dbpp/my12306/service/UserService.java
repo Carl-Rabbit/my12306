@@ -123,7 +123,7 @@ public class UserService {
 			} else {
 				ret.setStatus(ResultCode.EXCEPTION);
 			}
-			ret.setDetail(e.getCause().getMessage().split("详细：")[1]);
+			ret.setDetail(e.getCause().getMessage().split("Detail: ")[1]);
 			TransactionAspectSupport.currentTransactionStatus()
 					.setRollbackOnly();
 		}

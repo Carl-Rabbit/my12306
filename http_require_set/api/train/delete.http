@@ -1,13 +1,9 @@
 ### success (admin)
-DELETE {{baseUrl}}/api/admin/station/372
+DELETE {{baseUrl}}/api/admin/train/12000T999000
 Authorization: admin:admin
 
-### success (admin)
-DELETE {{baseUrl}}/api/admin/city?name=八原
-Authorization: admin:admin
-
-### fail: no such city
-DELETE {{baseUrl}}/api/admin/city/-1
+### fail: param error
+DELETE {{baseUrl}}/api/admin/train/12000T999000XX
 Authorization: admin:admin
 
 ###

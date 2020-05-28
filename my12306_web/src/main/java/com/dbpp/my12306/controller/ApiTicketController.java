@@ -164,7 +164,7 @@ public class ApiTicketController {
 		try {
 			int r = ticketService.delete(ticketId);
 			if (r == 1) {
-				ret.setDetail("Delete completed. WRING: some other data is deleted cascade.");
+				ret.setDetail("Delete completed. WARNING: some other data is deleted cascade.");
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
 				ret.setDetail("No such ticket.");

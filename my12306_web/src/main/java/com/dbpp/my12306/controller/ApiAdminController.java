@@ -103,8 +103,8 @@ public class ApiAdminController {
 					ret.setStatus(ResultCode.EXCEPTION);
 				}
 				String msg = e.getCause().getMessage();
-				ret.setDetail((msg.contains("详细：")) ?
-						msg.split("详细：")[1] : msg);
+				ret.setDetail((msg.contains("Detail: ")) ?
+						msg.split("Detail: ")[1] : msg);
 				e.printStackTrace();
 			}
 		}

@@ -1,3 +1,7 @@
+### delete train for init
+DELETE {{baseUrl}}/api/admin/train/12000T999000
+Authorization: admin:admin
+
 ### add train instance
 POST {{baseUrl}}/api/admin/train
 Authorization: admin:admin
@@ -7,3 +11,42 @@ Content-Type: application/json
   "train_no": "12000T999000",
   "train_kind": "T"
 }
+
+### generate seat by default
+POST {{baseUrl}}/api/admin/seat/12000T999000
+Authorization: admin:admin
+
+### link train to T999
+POST {{baseUrl}}/api/admin/route_sch
+Authorization: admin:admin
+Content-Type: application/json
+
+{
+  "train_code": "T999",
+  "train_no": "12000T999000",
+  "depart_date": "2020-05-29",
+  "status": "V"
+}
+
+### search it
+GET {{baseUrl}}/api/routes/油屋/浮春/2020-05-29
+
+### buy it now
+POST {{baseUrl}}/api/routes
+Authorization: CarlRabbit:123456
+Content-Type: application/json
+
+[
+  {
+    "psgId": 1,
+    "trainCode": "T999",
+    "fromIndex": 1,
+    "toIndex": 3,
+    "date": "2020-05-29",
+    "seatCls": "B",
+    "seatType": "W",
+    "prefer": "1"
+  }
+]
+
+###

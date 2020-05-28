@@ -227,7 +227,7 @@ from (with template as (
                                       join trains t on s.train_no = t.train_no
                                       join route_schedule rs on t.train_no = rs.train_no
                                  and depart_date = '2020-05-29'::date
-                             where rs.train_code = 'G410')
+                             where rs.train_code = 'G2924')
                   select *
                   from q
                       except
@@ -238,11 +238,11 @@ from (with template as (
                                 on q.seat_id = os.seat_id
                                     and route_id = (select route_id
                                                     from route_schedule as rs
-                                                    where train_code = 'G410'
+                                                    where train_code = 'G2924'
                                                       and depart_date = '2020-05-29'::date)
                            join time_details td
                                 on os.time_detail_id = td.time_detail_id
-                                    and station_index between 1 and 4 - 1) x
+                                    and station_index between 1 and 5 - 1) x
             group by class, type) x2
            on t.class = x2.class and t.type = x2.type
       order by class, type) rest_tickes;

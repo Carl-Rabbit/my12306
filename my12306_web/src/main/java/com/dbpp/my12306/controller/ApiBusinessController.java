@@ -155,7 +155,7 @@ public class ApiBusinessController {
 				ret.setDetail(e.getMessage());
 			}
 		}
-		loggerService.info(logger, "ApiBusinessController.listRoutes list=" + list
+		loggerService.info(logger, "ApiBusinessController.buyTickets list=" + list
 				+ " auth=" + auth.getData().getUserName(), ret.getStatus() + " " + ret.getDetail());
 		return ret;
 	}

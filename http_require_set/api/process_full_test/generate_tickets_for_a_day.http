@@ -1,0 +1,9 @@
+### success: fuzzy search, 浩特 -> 呼和浩特
+GET {{baseUrl}}/api/routes/浩特/深圳/2020-06-01
+
+### arrange all route by template.
+### more than 7,500,000 ticket are generate by this api
+PUT {{baseUrl}}/api/admin/route_sch/opt?date=2020-06-01
+Authorization: admin:admin
+
+###

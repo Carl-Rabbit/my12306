@@ -155,7 +155,7 @@ public class PassengerService {
 			if (psg.getKind() == null) {
 				psg.setKind("A");
 			}
-			ret.setData(psg.getUserId());
+			ret.setData(psg.getPassengerId());
 		} catch (Exception e) {
 			ret.setDetail(null);
 			if (e.getCause().getMessage().contains("duplicate key")) {
@@ -165,7 +165,7 @@ public class PassengerService {
 			} else {
 				ret.setStatus(ResultCode.EXCEPTION);
 			}
-			ret.setDetail(e.getCause().getMessage().split("详细：")[1]);
+			ret.setDetail(e.getCause().getMessage().split("Detail: ")[1]);
 			TransactionAspectSupport.currentTransactionStatus()
 					.setRollbackOnly();
 		}

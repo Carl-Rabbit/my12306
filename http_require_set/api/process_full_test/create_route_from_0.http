@@ -20,7 +20,7 @@ Content-Type: application/json
 {
   "station_name": "油屋",
   "station_code": "XYW",
-  "city_id": 391
+  "city_id": 395
 }
 
 ### add station 2 (add in advence)
@@ -31,7 +31,7 @@ Content-Type: application/json
 {
   "station_name": "沼原",
   "station_code": "XZY",
-  "city_id": 391
+  "city_id": 395
 }
 
 ### add station 3 (add in advence)
@@ -42,7 +42,7 @@ Content-Type: application/json
 {
   "station_name": "沼底",
   "station_code": "XZD",
-  "city_id": 391
+  "city_id": 395
 }
 
 ### add station 4
@@ -53,7 +53,7 @@ Content-Type: application/json
 {
   "station_name": "浮春之乡",
   "station_code": "FCX",
-  "city_id": 391
+  "city_id": 395
 }
 
 ### check stations by city_name
@@ -66,7 +66,7 @@ Content-Type: application/json
 
 {
   "train_code": "T999",
-  "station_id": 5204,
+  "station_id": 5216,
   "station_index": 1,
   "arrive_time": "00:00:00",
   "leave_time": "00:00:00",
@@ -81,7 +81,7 @@ Content-Type: application/json
 
 {
   "train_code": "T999",
-  "station_id": 5205,
+  "station_id": 5217,
   "station_index": 2,
   "arrive_time": "01:00:00",
   "leave_time": "01:03:00",
@@ -96,7 +96,7 @@ Content-Type: application/json
 
 {
   "train_code": "T999",
-  "station_id": 5206,
+  "station_id": 5218,
   "station_index": 3,
   "arrive_time": "02:00:00",
   "leave_time": "02:03:00",
@@ -111,7 +111,7 @@ Content-Type: application/json
 
 {
   "train_code": "T999",
-  "station_id": 5207,
+  "station_id": 5219,
   "station_index": 4,
   "arrive_time": "03:00:00",
   "leave_time": "03:00:00",
@@ -126,7 +126,7 @@ Content-Type: application/json
 
 {
   "train_code": "T999",
-  "station_id": 5208,
+  "station_id": 5219,
   "station_index": 4,
   "arrive_time": "04:00:00",
   "leave_time": "04:00:00",
@@ -154,7 +154,7 @@ Authorization: admin:admin
 Content-Type: application/json
 
 {
-  "time_detail_id": 93601,
+  "time_detail_id": 93621,
   "station_index": 3,
   "arrive_time": "04:00:00",
   "leave_time": "04:00:00"

@@ -44,7 +44,7 @@
         <if test="!seeDisable">and users.available='Y'</if>
     </select>
 
-    <insert id="add" useGeneratedKeys="true" keyProperty="user_id">
+    <insert id="add" useGeneratedKeys="true" keyProperty="passengerId" keyColumn="passenger_id">
         insert into passengers (user_id, first_name, last_name,
                                 kind, gender, id_no)
         values (#{userId}, #{firstName}, #{lastName},

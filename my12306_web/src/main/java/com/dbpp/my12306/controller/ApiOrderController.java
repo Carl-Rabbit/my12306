@@ -28,6 +28,7 @@ public class ApiOrderController {
 	private final LoggerService loggerService;
 
 	private Logger logger = LogManager.getLogger(this.getClass().getName());
+	private String detail;
 
 	public ApiOrderController(AuthService authService, OrderService orderService,
 	                          TicketService ticketService, LoggerService loggerService) {
@@ -76,6 +77,37 @@ public class ApiOrderController {
 			ret.setDetail(e.getCause().getMessage());
 		}
 		loggerService.info(logger, "ApiOrderController.getInfo orderId=" + orderId
+				+ " auth=" + auth.getData().getUserName(), ret.getStatus() + " " + ret.getDetail());
+		return ret;
+
+	}
+
+	@RequestMapping(value = "/orders", method = RequestMethod.GET)
+	public ResponseSet<?> getAll(HttpServletRequest request) {
+		var auth = authService.checkUser(request);
+		if (auth.getStatus() != ResultCode.SUCCESS.getCode()) {
+			return auth;
+		}
+		var ret = new ResponseSet<>();
+		List<Order> data;
+		try {
+			while (true) {
+				data = orderService.getAll(auth.getData().getUserId());
+				if (data.isEmpty()) {
+					ret = new ResponseSet<>(ResultCode.NO_RESULT, "No such order", null);
+					break;
+				}
+				ret.setStatus(ResultCode.SUCCESS);
+				ret.setData(data);
+				break;
+			}
+
+		} catch (Exception e) {
+			ret.setData(null);
+			ret.setStatus(ResultCode.EXCEPTION);
+			ret.setDetail(e.getCause().getMessage());
+		}
+		loggerService.info(logger, "ApiOrderController.getAll"
 				+ " auth=" + auth.getData().getUserName(), ret.getStatus() + " " + ret.getDetail());
 		return ret;
 
@@ -131,7 +163,7 @@ public class ApiOrderController {
 		try {
 			int r = orderService.delete(orderId);
 			if (r == 1) {
-				ret.setDetail("Delete completed. WRING: some other data is deleted cascade.");
+				ret.setDetail(detail);
 				ret.setStatus(ResultCode.SUCCESS);
 			} else {
 				ret.setDetail("No such order.");

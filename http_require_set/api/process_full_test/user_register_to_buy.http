@@ -1,0 +1,90 @@
+### delete order for init
+DELETE {{baseUrl}}/api/admin/order/7663
+Authorization: admin:admin
+
+### delete user for init
+DELETE {{baseUrl}}/api/admin/user?name=LittleDog7
+Authorization: admin:admin
+
+
+### register
+POST {{baseUrl}}/api/user
+Content-Type: application/json
+
+{
+  "name": "LittleDog7",
+  "password": "123456",
+  "phone_no": "13511112222",
+  "kind": "A",
+  "rnc": "N"
+}
+
+### create passenger
+POST {{baseUrl}}/api/psg
+Authorization: LittleDog7:123456
+Content-Type: application/json
+
+{
+  "first_name": "William",
+  "last_name": "Smith",
+  "kind": "A",
+  "gender": "M",
+  "id_no": "150223200002292138"
+}
+
+### success: get all of psgs
+GET {{baseUrl}}/api/psgs
+Authorization: LittleDog7:123456
+
+### fuzzy search
+GET {{baseUrl}}/api/routes/白云北/福田/2020-05-29
+
+### buy ticket: first ticket's prefer seat if F
+POST {{baseUrl}}/api/routes
+Authorization: LittleDog7:123456
+Content-Type: application/json
+
+[
+  {
+    "psgId": 180,
+    "trainCode": "G2924",
+    "fromIndex": 2,
+    "toIndex": 3,
+    "date": "2020-05-29",
+    "seatCls": "B",
+    "seatType": "Z",
+    "prefer": "F"
+  },
+  {
+    "psgId": 180,
+    "trainCode": "G2924",
+    "fromIndex": 3,
+    "toIndex": 5,
+    "date": "2020-05-29",
+    "seatCls": "A",
+    "seatType": "Z"
+  }
+]
+
+### select orders
+GET {{baseUrl}}/api/orders
+Authorization: LittleDog7:123456
+
+### select order
+GET {{baseUrl}}/api/order/7663
+Authorization: LittleDog7:123456
+
+### fuzzy search
+GET {{baseUrl}}/api/routes/白云北/福田/2020-05-29
+
+### refund
+PUT {{baseUrl}}/api/ticket
+Authorization: LittleDog7:123456
+Content-Type: application/json
+
+{
+  "ticket_id": 11604,
+  "opt": "refund"
+}
+
+###

@@ -1,8 +1,8 @@
 spring:
   profiles:
 #    active: @profileActive@
-    active: cloud
-#    active: prod
+#    active: cloud
+    active: prod
   mvc:
     view:
       suffix: .html
