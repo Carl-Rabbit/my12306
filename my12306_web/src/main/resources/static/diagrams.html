@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>My12306</title>
+    <title>My12306 设计及测试结果</title>
 
     <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="/webjars/jquery/1.12.4/jquery.min.js"></script>
@@ -36,32 +36,40 @@
 
             <div class="jumbotron">
                 <h2>
-                    这是一个仅做练习使用的火车票售卖/管理系统
+                    这是该项目的数据库设计与并发访问测试
                 </h2>
 
                 <div>
-                    它是纯API项目, 你可以调用API：<br>
-                    &emsp;&emsp;1. 查询火车票信息<br>
-                    &emsp;&emsp;2. 注册一个用户，进行购买、退票<br>
-                    &emsp;&emsp;3. 通过管理员账户，管理线路，
-                    <del>删掉所有数据然后跑路</del>
-                    <br>
-                </div>
-                <br>
-
-                <div>
-                    API的调用示例已经写好啦，你可以在Github中的http_require_set文件夹下找到，然后直接使用idea的HTTP工具运行。
+                    因为这是数据库的期末Proj，为了充分利用关系型数据库
+                    <del>(掩盖菜的事实)</del>
+                    ，在性能和实用上有些妥协。
+                    不过也算是能在接受范围内。<br>
+                    另外，也牺牲了一定的性能，优先解决余票少于购票人的高并发情形下，购票成功率极低的情况(20~30%修复至近100%)
                 </div>
 
-
-                <div>
-                    Github地址：<a href="https://github.com/Carl-Rabbit/my12306">戳这里</a>
-                </div>
             </div>
+
+            <div class="container">
+                <img class="center-block img-responsive" src="images/my_railway.png" alt="Db design">
+                <p class="text-center">图1 库表设计</p>
+            </div>
+
+            <div class="container">
+                <br><br>
+                <img class="center-block img-responsive" src="images/diagram1.png" alt="Db design">
+                <p class="text-center">图2 充足余票时并发模拟结果</p>
+            </div>
+
+            <div class="container">
+                <br><br>
+                <img class="center-block img-responsive" src="images/diagram2.png" alt="Db design">
+                <p class="text-center">图3 余票少于购票者时并发模拟结果</p>
+            </div>
+
         </div>
     </div>
 
-    <div class="row"><p style="height: 80px"></p></div>
+    <div class="row"><p style="height: 40px"></p></div>
 
 </div>
 
